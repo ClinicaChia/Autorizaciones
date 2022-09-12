@@ -13,10 +13,22 @@ app.use(cors());
 io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
 
+    socket.on('append', (data) => {
+        console.log(data);
+        socket.emit('Append', data);
+    })
+
+    socket.on("hello", (data) => {
+        console.log(data);
+        socket.broadcast.emit("hello", data);
+
+    })
+
     socket.on('disconnect', () => {
         
         console.log('user disconnected');
     });
+
 });
 
 

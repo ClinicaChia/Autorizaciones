@@ -94,3 +94,16 @@
 .forgot:hover{
     font-size: 14px;
 }
+
+
+.services{
+    width: 43%;
+    height: 25px;
+    outline: none;
+    border: 2px solid var(--primary);
+    background-color: var(--secondary);
+    font-size: 16px;
+    text-align: center;
+}
+
+

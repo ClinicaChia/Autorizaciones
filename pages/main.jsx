@@ -4,13 +4,13 @@ import Navbar from '../components/Navbar'
 import io from "socket.io-client";
 import axios from 'axios';
 let socket;
-export default function main() {
+export default function Main() {
 
   const socketInitializer = async () => {
     // We just call it because we don't need anything else out of it
 
-  socket = io("http://173.16.10.193:3001");
-    
+  socket = io("http://173.16.10.193:3001",{reconnection: true});
+  
     
   };
 useEffect(() => {
@@ -40,6 +40,7 @@ useEffect(() => {
   }
 
   else if( e.target.name != 'documento' && (lastChar.charCodeAt(0) >= 65 && lastChar.charCodeAt(0) <= 90) || lastChar ==' ' || lastChar=='11' ){
+    console.log('entro')
     setData({
       ...data,
       [e.target.name]: e.target.value,
@@ -68,7 +69,19 @@ useEffect(() => {
     
   }
 
-  useEffect(() => { console.log(data) }, [data]);
+  const AppendDB = (e) => {
+    const fecha = new Date();
+    const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+    const horaString = fecha.getHours() + ':' + fecha.getMinutes();
+    const dataToSend = data;
+    dataToSend.fecha = fechaString;
+    dataToSend.hora = horaString;
+    console.log(dataToSend);
+    socket.emit("hello", dataToSend);
+    console.log("se envio el mensaje")
+  } 
+
+
 
   return (
     <div className={styles.container}>
@@ -108,7 +121,7 @@ useEffect(() => {
 
           <div className={styles.form_group}>
                 <label htmlFor="nombre">Procedimiento</label>
-                <input className={styles.campo} type="text" name="Procedimiento" value={data["procedimiento"]} onChange={onChange} />
+                <input className={styles.campo} type="text" name="procedimiento" value={data["procedimiento"]} onChange={onChange} />
           </div>
 
           <div className={styles.form_group}>
@@ -118,7 +131,7 @@ useEffect(() => {
           
         </section>
 
-        <button className={styles.enviar}>Registrar</button>
+        <button className={styles.enviar} onClick={AppendDB} >Registrar</button>
 
     </div>
   )

@@ -16,6 +16,14 @@ export default function Navbar({active}) {
             <li 
             onClick={() => router.push('/summary')}
             className={`${styles.item} ${ !active && styles.active}`}>Resumen</li>
+
+            <li 
+            onClick={() => router.push('/usuarios')}
+            className={`${styles.item}`}>Usuarios</li>
+
+            <li 
+            onClick={() => router.push('/nuevo')}
+            className={`${styles.item}`}>Nuevo</li>
         </ul>
 
         <Image 

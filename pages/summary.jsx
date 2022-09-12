@@ -1,19 +1,33 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import Navbar from '../components/Navbar'
 import Card from '../components/Card'
 import styles from '../styles/summary.module.css'
 import io from "socket.io-client";
-const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const data = []
+
+const priorizacion = {
+    1:'muy baja',
+    2:'baja',
+    3:'media',
+    4:'alta',
+    5:'muy alta'
+}
 
 let socket;
 
 export default function Summary() {
 
+
+    const [arr,setArr] = useState(data)
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
     
-      socket = io("http://173.16.10.193:3001");
-        
+      socket = io("http://173.16.10.193:3001",{reconnection: true});
+      
+      socket.on("hello", (data) => {
+        console.log([...arr,data]);
+       setArr( (arr) => [...arr,data] )
+      });
         
       };
     
@@ -21,6 +35,10 @@ export default function Summary() {
     useEffect(() => {
         socketInitializer();
     }, []);
+
+    useEffect(() => {
+        console.log(arr)
+    }, [arr]);
   return (
     
     <main className={styles.container}>
@@ -47,22 +65,24 @@ export default function Summary() {
                     <th>Servicio</th>
                     <th>Procedimiento</th>
                     <th>Priorizacion</th>
+                    <th>E.P.S</th>
                     <th>Codigo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
-                {data.map((item,index) => {
+                {arr.map((item,index) => {
                     return(
                         <tr key={index}>
-                            <td>2021-05-05</td>
-                            <td>10:00</td>
-                            <td>123456789</td>
-                            <td>Nombre del paciente</td>
+                            <td>{item.fecha}</td>
+                            <td>{item.hora}</td>
+                            <td>{item.documento}</td>
+                            <td>{item.nombre}</td>
                             <td>Urgencias</td>
-                            <td>Consulta</td>
-                            <td>Alta</td>
+                            <td>{item.procedimiento}</td>
+                            <td>{item.EPS}</td>
+                            <td>{priorizacion[item.priorizacion]}</td>
                             <td> <input type="text" /> </td>
                             <td> <button>Editar</button> </td>
                         </tr>

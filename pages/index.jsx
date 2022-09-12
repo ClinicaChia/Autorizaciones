@@ -1,8 +1,21 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/home.module.css'
-
+import { useState } from 'react'
 export default function Home() {
+
+    const [data, setData] = useState({
+        servicio: '',
+        pass: '',
+    })
+
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
+    }
+
   return (
     <main className={styles.container} >
         <div className={styles.left}>
@@ -20,11 +33,21 @@ export default function Home() {
 
             <section className={styles.form_group}>
                 <label className={styles.cedula}>Servicio</label>
-                <input type="text" />
+                <select className={styles.services} name="servicio"  value={data["servicio"]}  onChange={handleChange} >
+                    <option value=" "></option>
+                    <option value="Hospitalizacion">Hospitalizacion</option>
+                    <option value="Urgencias">Urgencias</option>
+                    <option value="UCI neonatal">UCI neonatal</option>
+                    <option value="1UCI adulto">UCI adulto</option>
+                    <option value="Cirugia">Cirugia</option>
+                    <option value="Ginecobtetricia">Ginecoobtetricia</option>
+
+                
+                </select>
             </section>
 
             <section className={styles.form_group}>
-                <label className={styles.pass} >Contraseña</label>
+                <label className={styles.pass} value={data["pass"]} onChange={handleChange} >Contraseña</label>
                 <input type="password" />
             </section>
 
