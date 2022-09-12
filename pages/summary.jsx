@@ -3,7 +3,8 @@ import Navbar from '../components/Navbar'
 import Card from '../components/Card'
 import styles from '../styles/summary.module.css'
 import io from "socket.io-client";
-const data = []
+import axios from 'axios';
+
 
 const priorizacion = {
     1:'muy baja',
@@ -15,9 +16,11 @@ const priorizacion = {
 
 let socket;
 
-export default function Summary() {
 
 
+export default function Summary({data}) {
+
+    console.log(data)
     const [arr,setArr] = useState(data)
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
@@ -79,7 +82,7 @@ export default function Summary() {
                             <td>{item.hora}</td>
                             <td>{item.documento}</td>
                             <td>{item.nombre}</td>
-                            <td>Urgencias</td>
+                            <td>{item.servicio}</td>
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
@@ -92,4 +95,14 @@ export default function Summary() {
         </table>
     </main>
   )
+}
+
+
+export async function getServerSideProps(context) {
+    const res = await axios.get(process.env.HOST_URI + "/api/getData")
+    console.log(res)
+    const data = await res.data
+    return {
+       props: data
+    }
 }

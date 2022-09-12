@@ -15,6 +15,8 @@ export default function Main() {
   };
 useEffect(() => {
     socketInitializer();
+    setLocalData( JSON.parse(localStorage.getItem('data')) )
+
 }, []);
 
   const [data,setData] = useState({
@@ -24,6 +26,8 @@ useEffect(() => {
     procedimiento:'',
     priorizacion:'3',
   })
+
+  const [localData,setLocalData] = useState(null);
 
   const onChange = (e) => {
     const val = e.target.value ;
@@ -76,9 +80,20 @@ useEffect(() => {
     const dataToSend = data;
     dataToSend.fecha = fechaString;
     dataToSend.hora = horaString;
+    dataToSend.TimeStap = fecha.getTime();
+    dataToSend.AuthTime = 0;
+    dataToSend.servicio = localData.usuario;
+
     console.log(dataToSend);
-    socket.emit("hello", dataToSend);
-    console.log("se envio el mensaje")
+    
+    axios.post('/api/add', dataToSend)
+    .then(res => {
+      socket.emit('hello', dataToSend);
+      alert(res.data);
+    
+    })
+    .catch(err => console.log(err));
+ 
   } 
 
 
