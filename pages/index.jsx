@@ -21,7 +21,6 @@ export default function Home() {
 
     const HandleLogIn = (e) => {
         e.preventDefault();
-        console.log(data);
         axios.post('http://localhost:3000/api/login', data)
         .then((res) => {
             const data = res.data;

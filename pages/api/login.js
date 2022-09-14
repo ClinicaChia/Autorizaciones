@@ -18,7 +18,7 @@ const handler = nc({
   .post(async (req, res) => {
 
     const data = req.body;
-    console.log(data);
+
     const client = await MongoClient.connect(process.env.MONGO_URI);
     const db = client.db("Autorizaciones");
     const collection = db.collection("Servicios");
@@ -27,26 +27,11 @@ const handler = nc({
     const result = await collection.findOne(query);
     await client.close();
     result ? res.status(200).json(result) : res.status(401).end("No se encontro el usuario");
-    console.log(result)
+
    
     
   })
 
-export  async function _handler(req, res) {
 
-  const data = req.body;
-
-  console.log(data);
- // const client = await MongoClient.connect(process.env.MONGO_URI);
- // const db = client.db("Autorizaciones");
- // const collection = db.collection("Servicios");
- // const query = { Usuario: data.servicio };
-
-  //const result = await collection.findOne(query);
-  //console.log(result);
-
-  res.status(200).json({data:"ok"} )
-
-}
 
 export default handler;

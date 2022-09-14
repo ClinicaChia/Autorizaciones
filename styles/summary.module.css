@@ -40,6 +40,14 @@
     color: var(--secondary);
 }
 
+.container td{
+    padding: 8px;
+}
+
+.tableR:nth-child(even){
+    background-color: PowderBlue;
+}
+
 .container table tr,.container table td {
    border : 2px solid var(--primary);
    text-align: center;

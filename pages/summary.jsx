@@ -17,19 +17,37 @@ const priorizacion = {
 let socket;
 
 
+const useTable = (initalData) => {
+
+    const [Data,setData] = useState(initalData)
+    const [filter,setFilter] = useState('')
+    const [data1,setData1] = useState([])
+    const [data2,setData2] = useState([])
+
+    useEffect(() => {
+
+    }, [Data])
+
+
+
+    return [Data,setData,filter,setFilter,data1,setData1,data2,setData2]
+}
+
 
 export default function Summary({data}) {
 
-    console.log(data)
-    const [arr,setArr] = useState(data)
+   
+    const [Data,setData,filter,setFilter,data1,setData1,data2,setData2]= useTable(data)
+    
+    const [Inputs,setInputs] = useState({})
+    
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
     
-      socket = io("http://173.16.10.193:3001",{reconnection: true});
+      socket = io("http://localhost:3001",{reconnection: true});
       
       socket.on("hello", (data) => {
-        console.log([...arr,data]);
-       setArr( (arr) => [...arr,data] )
+       setData( (Data) => [...Data,data] )
       });
         
       };
@@ -39,9 +57,27 @@ export default function Summary({data}) {
         socketInitializer();
     }, []);
 
-    useEffect(() => {
-        console.log(arr)
-    }, [arr]);
+
+    const HandleClik = (e) => {
+        
+
+        const temp = Data.filter( (item) => item.TimeStap != e.target.name)
+        setData( temp  )
+
+        delete Inputs[e.target.name]
+
+    }
+
+    const HandleChange = (e) => {
+        setInputs({
+            ...Inputs,
+            [e.target.name]:e.target.value
+        })
+    }
+
+
+
+  
   return (
     
     <main className={styles.container}>
@@ -58,7 +94,7 @@ export default function Summary({data}) {
 
         </section>
 
-        <table>
+        <table key={Data.length} >
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -75,9 +111,9 @@ export default function Summary({data}) {
             </thead>
 
             <tbody>
-                {arr.map((item,index) => {
+                {Data.map((item,index) => {
                     return(
-                        <tr key={index}>
+                        <tr  className={styles.tableR} key={index}>
                             <td>{item.fecha}</td>
                             <td>{item.hora}</td>
                             <td>{item.documento}</td>
@@ -86,8 +122,8 @@ export default function Summary({data}) {
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
-                            <td> <input type="text" /> </td>
-                            <td> <button>Editar</button> </td>
+                            <td> <input name={item.TimeStap} defaultValue=""  onChange={HandleChange} type="text" /> </td>
+                            <td> <button name={item.TimeStap}  onClick={HandleClik} >Editar</button> </td>
                         </tr>
                     )
                 })}
@@ -100,7 +136,7 @@ export default function Summary({data}) {
 
 export async function getServerSideProps(context) {
     const res = await axios.get(process.env.HOST_URI + "/api/getData")
-    console.log(res)
+
     const data = await res.data
     return {
        props: data

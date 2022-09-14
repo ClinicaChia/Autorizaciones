@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const collection = db.collection("Historial");
 
   const result = await collection.find({}).toArray();
-  console.log(result);
+
   await client.close();
   res.status(200).json({ data: result })
 }
