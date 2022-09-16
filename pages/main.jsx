@@ -17,7 +17,7 @@ export default function Main() {
   const socketInitializer = async () => {
     // We just call it because we don't need anything else out of it
 
-  socket = io("http://localhost:3001",{reconnection: true});
+  socket = io("http://173.16.10.193:3001",{reconnection: true});
   
     
   };
@@ -91,13 +91,13 @@ useEffect(() => {
     dataToSend.TimeStap = fecha.getTime();
     dataToSend.AuthTime = 0;
     dataToSend.servicio = localData.usuario;
+    dataToSend.autorizacion = '';
+
     
-
-
     
     axios.post('/api/add', dataToSend)
     .then(res => {
-      socket.emit('hello', dataToSend);
+      socket.emit('append', dataToSend);
       alert("Se cargo correacmente el paciente");
       setData({
         documento:'',

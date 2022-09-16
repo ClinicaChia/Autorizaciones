@@ -21,7 +21,7 @@ export default function Home() {
 
     const HandleLogIn = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3000/api/login', data)
+        axios.post('/api/login', data)
         .then((res) => {
             const data = res.data;
             localStorage.setItem('data',  JSON.stringify(data) )

@@ -15,13 +15,12 @@ io.on('connection', (socket) => {
 
     socket.on('append', (data) => {
         console.log(data);
-        socket.emit('Append', data);
+        socket.local.emit('append', data);
     })
 
-    socket.on("hello", (data) => {
-        console.log(data);
-        socket.broadcast.emit("hello", data);
-
+    socket.on('validate', (data) => {
+        console.log("si envia el mensaje");
+        socket.local.emit('validate', data);
     })
 
     socket.on('disconnect', () => {

@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useMemo} from 'react'
 import Navbar from '../components/Navbar'
 import Card from '../components/Card'
 import styles from '../styles/summary.module.css'
@@ -14,40 +14,96 @@ const priorizacion = {
     5:'muy alta'
 }
 
+const priorizacionStyles = {
+    1: styles.MB,
+    2: styles.B,
+    3: styles.M,
+    4: styles.A,
+    5: styles.MA,
+}
+
+
+
 let socket;
 
 
 const useTable = (initalData) => {
 
-    const [Data,setData] = useState(initalData)
+
     const [filter,setFilter] = useState('')
     const [data1,setData1] = useState([])
     const [data2,setData2] = useState([])
+    const [dataTemp,setDataTemp] = useState({})
+    const Tabla1 = useMemo(() => {
+        if(filter == ''){
+            return data1.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
+        }
+        let temp = data1.filter((item) => item.documento == filter )
+        return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
+    },[filter,data1])
 
+    const Tabla2 = useMemo(() => {
+
+        if(filter == ''){
+            return data2.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
+        }
+        let temp = data2.filter((item) => item.documento == filter )
+        return temp.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
+
+    },[filter,data2])
+
+   
     useEffect(() => {
 
-    }, [Data])
+        if(initalData.length > 0){
+            
+            let temp = initalData.filter((item) => item.AuthTime ==0 )
+            setData1(temp)
+            temp = initalData.filter((item) => item.AuthTime !=0 )
+            setData2(temp)
+
+        }
+    }, [])
+
+    useEffect(() => {
+        console.log(dataTemp)
+        if(dataTemp.AuthTime){
+            setData1(data1.filter((item) => item.TimeStap != dataTemp.TimeStap))
+        }
+        
+    },[dataTemp])
+
+   
 
 
 
-    return [Data,setData,filter,setFilter,data1,setData1,data2,setData2]
+    return [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp]
 }
 
 
 export default function Summary({data}) {
 
    
-    const [Data,setData,filter,setFilter,data1,setData1,data2,setData2]= useTable(data)
+    const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp] = useTable(data)
     
     const [Inputs,setInputs] = useState({})
     
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
     
-      socket = io("http://localhost:3001",{reconnection: true});
+      socket = io("http://173.16.10.193:3001",{reconnection: false});
       
-      socket.on("hello", (data) => {
-       setData( (Data) => [...Data,data] )
+      socket.on("append", (data) => {
+        setData1( (prev) => [...prev,data])
+       
+      });
+      socket.on("validate", (data) => {
+
+        //setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
+        setDataTemp(data)
+        setData2( (prev) => [...prev,data])
+        
+       
       });
         
       };
@@ -58,13 +114,19 @@ export default function Summary({data}) {
     }, []);
 
 
-    const HandleClik = (e) => {
-        
+    const HandleClik = (data) => {
 
-        const temp = Data.filter( (item) => item.TimeStap != e.target.name)
-        setData( temp  )
-
-        delete Inputs[e.target.name]
+        setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
+        data.autorizacion = Inputs[data.TimeStap];
+        data.AuthTime = new Date().getTime();
+        setData2( (prev) => [...prev,data])
+        socket.emit('validate',data)
+        axios.post('/api/update',{
+            TimeStap : data.TimeStap,
+            autorizacion:data.autorizacion,
+            AuthTime:data.AuthTime,
+        }).then((res) => {alert('Se ha actualizado la base de datos')})
+        .catch((err) => {alert('Ha ocurrido un error')})
 
     }
 
@@ -83,7 +145,7 @@ export default function Summary({data}) {
     <main className={styles.container}>
         <Navbar active={false}/>
         
-        <input className={styles.filtro} type="text"  placeholder='Escriba la cedula para realizar el filtro...✍️' />
+        <input className={styles.filtro} type="text" onChange={(e)=>{setFilter(e.target.value)}}  placeholder='Escriba la cedula para realizar el filtro...✍️' />
 
         <section className={styles.row}>
 
@@ -94,7 +156,7 @@ export default function Summary({data}) {
 
         </section>
 
-        <table key={Data.length} >
+        <table key={Tabla1.length} >
             <thead>
                 <tr>
                     <th>Fecha</th>
@@ -103,17 +165,19 @@ export default function Summary({data}) {
                     <th>Nombre del paciente</th>
                     <th>Servicio</th>
                     <th>Procedimiento</th>
-                    <th>Priorizacion</th>
                     <th>E.P.S</th>
+                    <th>Priorizacion</th>
                     <th>Codigo</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
+
                 </tr>
             </thead>
 
             <tbody>
-                {Data.map((item,index) => {
+                {Tabla1.map((item,index) => {
                     return(
-                        <tr  className={styles.tableR} key={index}>
+                        <tr  className={ priorizacionStyles[item.priorizacion] } key={index}>
                             <td>{item.fecha}</td>
                             <td>{item.hora}</td>
                             <td>{item.documento}</td>
@@ -122,8 +186,27 @@ export default function Summary({data}) {
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
-                            <td> <input name={item.TimeStap} defaultValue=""  onChange={HandleChange} type="text" /> </td>
-                            <td> <button name={item.TimeStap}  onClick={HandleClik} >Editar</button> </td>
+                            <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> </td>
+                            <td>PENDIENTE</td>
+                            <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td>
+                        </tr>
+                    )
+                })}
+
+                {Tabla2.map((item,index) => {
+                    return(
+                        <tr  className={styles.complete} key={index}>
+                            <td>{item.fecha}</td>
+                            <td>{item.hora}</td>
+                            <td>{item.documento}</td>
+                            <td>{item.nombre}</td>
+                            <td>{item.servicio}</td>
+                            <td>{item.procedimiento}</td>
+                            <td>{item.EPS}</td>
+                            <td>{priorizacion[item.priorizacion]}</td>
+                            <td>{item.autorizacion}</td>
+                            <td>AUTORIZADO</td>
+                            <td> <button  disabled  >Editar</button> </td>
                         </tr>
                     )
                 })}

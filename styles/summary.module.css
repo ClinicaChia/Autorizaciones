@@ -44,11 +44,73 @@
     padding: 8px;
 }
 
-.tableR:nth-child(even){
-    background-color: PowderBlue;
+.container .MA{
+    background-color: Crimson;
+    font-weight: bold;
+    color: var(--secondary);
+} 
+
+.container .A{
+    background-color: IndianRed;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.container .M{
+    background-color: gold;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.container .B{
+    background-color: SeaGreen;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.container .MB{
+    background-color: green;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.container .complete{
+    background-color: Silver;
+    font-weight: bold;
+    color: var(--secondary);
 }
 
 .container table tr,.container table td {
    border : 2px solid var(--primary);
    text-align: center;
 }
+
+.editButton{
+    
+   color: var(--secondary);
+    border: 1px solid var(--secondary);
+    background-color: inherit;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.editButton:hover{
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.container table tr td input[type="text"]{
+    background-color: inherit;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--secondary);
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+
+}
+
