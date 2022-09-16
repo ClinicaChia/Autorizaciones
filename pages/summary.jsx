@@ -18,8 +18,11 @@ let socket;
 
 
 
-export default function Summary({data}) {
+export default function Summary({Data,SOCKETS_URI}) {
+    
+    const data = Data.data
 
+    console.log(data)
    
     const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp] = useTable(data)
     
@@ -28,7 +31,7 @@ export default function Summary({data}) {
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
     
-      socket = io("http://173.16.10.193:3001",{reconnection: false});
+      socket = io(SOCKETS_URI,{reconnection: false});
       
       socket.on("append", (data) => {
         setData1( (prev) => [...prev,data])
@@ -93,6 +96,6 @@ export async function getServerSideProps(context) {
 
     const data = await res.data
     return {
-       props: data
+       props: { Data:data,SOCKETS_URI:process.env.SOCKETS_URI}, // will be passed to the page component as props
     }
 }

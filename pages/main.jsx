@@ -12,12 +12,13 @@ const priorizacion = {
   4:'alta',
   5:'muy alta'
 }
-export default function Main() {
+export default function Main({SOCKETS_URI}) {
+
 
   const socketInitializer = async () => {
     // We just call it because we don't need anything else out of it
-
-  socket = io("http://173.16.10.193:3001",{reconnection: true});
+  console.log(SOCKETS_URI)
+  socket = io(SOCKETS_URI,{reconnection: true});
   
     
   };
@@ -171,4 +172,11 @@ useEffect(() => {
 
     </div>
   )
+}
+
+
+Main.getInitialProps = () => {
+  return {
+      SOCKETS_URI: process.env.SOCKETS_URI,
+  };
 }
