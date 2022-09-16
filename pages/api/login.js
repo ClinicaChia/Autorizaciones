@@ -23,8 +23,9 @@ const handler = nc({
     const db = client.db("Autorizaciones");
     const collection = db.collection("Servicios");
     const query = { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
-
+    console.log(query);
     const result = await collection.findOne(query);
+    console.log(result);
     await client.close();
     result ? res.status(200).json(result) : res.status(401).end("No se encontro el usuario");
 

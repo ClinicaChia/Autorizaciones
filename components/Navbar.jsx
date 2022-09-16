@@ -18,13 +18,15 @@ export default function Navbar({active}) {
             className={`${styles.item} ${ !active && styles.active}`}>Resumen</li>
 
         </ul>
-
-        <Image 
-            src={'/LOGO.png'}
-            width={220}
-            height={80}
-            style={{paddingRight: '40px'}}
-        />
+        
+        <div className={styles.Image_Container} >
+            <Image 
+                src={'/LOGO.png'}
+                width={600}
+                height={300}
+            />
+        </div>
+        
     </nav>
   )
 }

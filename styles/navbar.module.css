@@ -1,7 +1,7 @@
 .container{
     height: 100px;
     background-color: var(--primary);
-    width: 100vw;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -28,4 +28,12 @@
 
 .active{
     font-weight: bold;
+}
+
+
+.Image_Container{
+    width: 10%;
+    height: 100%;
+    margin-right: 20px;
+    margin-top: 20px;
 }

@@ -115,18 +115,25 @@ export default function Summary({data}) {
 
 
     const HandleClik = (data) => {
+        
 
-        setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
-        data.autorizacion = Inputs[data.TimeStap];
-        data.AuthTime = new Date().getTime();
-        setData2( (prev) => [...prev,data])
-        socket.emit('validate',data)
-        axios.post('/api/update',{
-            TimeStap : data.TimeStap,
-            autorizacion:data.autorizacion,
-            AuthTime:data.AuthTime,
-        }).then((res) => {alert('Se ha actualizado la base de datos')})
-        .catch((err) => {alert('Ha ocurrido un error')})
+        if(Inputs[data.TimeStap] && Inputs[data.TimeStap] != ''){
+            setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
+            data.autorizacion = Inputs[data.TimeStap];
+            data.AuthTime = new Date().getTime();
+            setData2( (prev) => [...prev,data])
+            socket.emit('validate',data)
+            axios.post('/api/update',{
+                TimeStap : data.TimeStap,
+                autorizacion:data.autorizacion,
+                AuthTime:data.AuthTime,
+            }).then((res) => {alert('Se ha actualizado la base de datos')})
+            .catch((err) => {alert('Ha ocurrido un error')})
+        }
+        else{
+            alert('Debe ingresar un valor en la autorizacion')
+        }
+
 
     }
 
@@ -177,7 +184,7 @@ export default function Summary({data}) {
             <tbody>
                 {Tabla1.map((item,index) => {
                     return(
-                        <tr  className={ priorizacionStyles[item.priorizacion] } key={index}>
+                        <tr   key={index}>
                             <td>{item.fecha}</td>
                             <td>{item.hora}</td>
                             <td>{item.documento}</td>
@@ -185,7 +192,7 @@ export default function Summary({data}) {
                             <td>{item.servicio}</td>
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
-                            <td>{priorizacion[item.priorizacion]}</td>
+                            <td  className={ priorizacionStyles[item.priorizacion] } >{priorizacion[item.priorizacion]}</td>
                             <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> </td>
                             <td>PENDIENTE</td>
                             <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td>

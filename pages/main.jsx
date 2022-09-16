@@ -72,7 +72,6 @@ useEffect(() => {
   
   const QueryDB = (e) => {
     //se hace la consulta a la base de datos
-
     setData({
       ...data,
       nombre: "nombre de prueba",
@@ -82,33 +81,39 @@ useEffect(() => {
   }
 
   const AppendDB = (e) => {
-    const fecha = new Date();
-    const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-    const horaString = fecha.getHours() + ':' + fecha.getMinutes();
-    const dataToSend = data;
-    dataToSend.fecha = fechaString;
-    dataToSend.hora = horaString;
-    dataToSend.TimeStap = fecha.getTime();
-    dataToSend.AuthTime = 0;
-    dataToSend.servicio = localData.usuario;
-    dataToSend.autorizacion = '';
 
+    if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 && data.procedimiento.length > 0){
+        const fecha = new Date();
+        const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+        const horaString = fecha.getHours() + ':' + fecha.getMinutes();
+        const dataToSend = data;
+        dataToSend.fecha = fechaString;
+        dataToSend.hora = horaString;
+        dataToSend.TimeStap = fecha.getTime();
+        dataToSend.AuthTime = 0;
+        dataToSend.servicio = localData.usuario;
+        dataToSend.autorizacion = '';
     
-    
-    axios.post('/api/add', dataToSend)
-    .then(res => {
-      socket.emit('append', dataToSend);
-      alert("Se cargo correacmente el paciente");
-      setData({
-        documento:'',
-        nombre:'',
-        EPS:'',
-        procedimiento:'',
-        priorizacion:'3',
-      });
-    
-    })
-    .catch(err => console.log(err));
+        axios.post('/api/add', dataToSend)
+        .then(res => {
+          socket.emit('append', dataToSend);
+          alert("Se cargo correacmente el paciente");
+          setData({
+            documento:'',
+            nombre:'',
+            EPS:'',
+            procedimiento:'',
+            priorizacion:'3',
+          });
+        
+        })
+        .catch(err => console.log(err));
+    }
+
+    else{
+      alert("Hay campos vacios o con datos incorrectos");
+    }
+
  
   } 
 

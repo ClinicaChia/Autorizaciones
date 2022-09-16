@@ -32,46 +32,57 @@
     margin-top: 20px;
 }
 
+.container td, .container th{
+    
+    max-width: 200px;
+}
+
 .container table tr th{
     min-width: 12%;
-    border: 2px solid var(--secondary);
     padding: 10px;
+    border-right: 1px solid var(--secondary);
     background-color: var(--primary);
     color: var(--secondary);
 }
+
+
+.container table tr th:last-child{
+    border-right: none;
+}
+
 
 .container td{
     padding: 8px;
 }
 
 .container .MA{
-    background-color: Crimson;
+    color: Crimson;
     font-weight: bold;
-    color: var(--secondary);
+
 } 
 
 .container .A{
-    background-color: IndianRed;
+    color: IndianRed;
     font-weight: bold;
-    color: var(--secondary);
+   
 }
 
 .container .M{
-    background-color: gold;
+    color: gold;
     font-weight: bold;
-    color: var(--secondary);
+   
 }
 
 .container .B{
-    background-color: SeaGreen;
+    color: SeaGreen;
     font-weight: bold;
-    color: var(--secondary);
+
 }
 
 .container .MB{
-    background-color: green;
+    color: green;
     font-weight: bold;
-    color: var(--secondary);
+    
 }
 
 .container .complete{
@@ -87,8 +98,8 @@
 
 .editButton{
     
-   color: var(--secondary);
-    border: 1px solid var(--secondary);
+   color: var(--primary);
+    border: 2px solid var(--primary);
     background-color: inherit;
     padding: 5px;
     font-size: 15px;
@@ -99,15 +110,15 @@
 }
 
 .editButton:hover{
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: var(--primary);
+    color: var(--secondary);
 }
 
 .container table tr td input[type="text"]{
     background-color: inherit;
     outline: none;
     border: none;
-    border-bottom: 2px solid var(--secondary);
+    border-bottom: 2px solid var(--primary);
     border-radius: 2px;
     text-align: center;
     font-size: 15px;
