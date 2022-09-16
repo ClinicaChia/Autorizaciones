@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "devServer": "nodemon socket_server.js",
+    "serve": "pm2 start server.js --name Autorizaciones",
+    "sokects": "pm2 start socket_server.js --name Sockets_para_Autorizaciones",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
