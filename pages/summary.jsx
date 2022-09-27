@@ -34,7 +34,7 @@ export default function Summary({Data,SOCKETS_URI}) {
       socket = io(SOCKETS_URI,{reconnection: false});
       
       socket.on("append", (data) => {
-        setData1( (prev) => [...prev,data])
+        setData1( (prev) => [...prev,...data])
        
       });
       socket.on("validate", (data) => {

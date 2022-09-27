@@ -17,7 +17,6 @@ export default function Main({SOCKETS_URI}) {
 
   const socketInitializer = async () => {
     // We just call it because we don't need anything else out of it
-  console.log(SOCKETS_URI)
   socket = io(SOCKETS_URI,{reconnection: true});
   
     
@@ -28,16 +27,20 @@ useEffect(() => {
 
 }, []);
 
+  const [n, setN] = useState(0)
+
   const [data,setData] = useState({
     documento:'',
     nombre:'',
     EPS:'',
-    procedimiento:'',
-    priorizacion:'3',
+    procedimiento:{ [n] :''},
+    priorizacion:'1',
   })
 
   const [localData,setLocalData] = useState(null);
 
+
+  //useEffect(() => {console.log(data)}, [data]);
   const onChange = (e) => {
     const val = e.target.value ;
  
@@ -70,6 +73,14 @@ useEffect(() => {
 
 
   }
+
+  const ChangePro = (e) => {
+  
+    setData({
+      ...data,
+      "procedimiento":{...data.procedimiento,[e.target.name]:e.target.value}
+    })
+  }
   
   const QueryDB = (e) => {
     //se hace la consulta a la base de datos
@@ -83,18 +94,34 @@ useEffect(() => {
 
   const AppendDB = (e) => {
 
-    if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 && data.procedimiento.length > 0){
-        const fecha = new Date();
-        const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
-        const horaString = fecha.getHours() + ':' + fecha.getMinutes();
-        const dataToSend = data;
-        dataToSend.fecha = fechaString;
-        dataToSend.hora = horaString;
-        dataToSend.TimeStap = fecha.getTime();
-        dataToSend.AuthTime = 0;
-        dataToSend.servicio = localData.usuario;
-        dataToSend.autorizacion = '';
-    
+    if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 ){
+
+        const dataToSend = Object.keys(data.procedimiento).map( (key) => {
+
+          const fecha = new Date();
+          const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+          const horaString = fecha.getHours() + ':' + fecha.getMinutes();
+
+          const temp = {
+            fecha: fechaString,
+            hora: horaString,
+            TimeStap: fecha.getTime(),
+            AuthTime: 0,
+            autorizacion:'',
+            procedimiento: data.procedimiento[key],
+            servicio: localData.usuario
+
+          }
+
+          return {
+            ...data,...temp
+          }
+
+        } );
+
+        
+        
+
         axios.post('/api/add', dataToSend)
         .then(res => {
           socket.emit('append', dataToSend);
@@ -103,9 +130,10 @@ useEffect(() => {
             documento:'',
             nombre:'',
             EPS:'',
-            procedimiento:'',
-            priorizacion:'3',
+            procedimiento:{ [0] :''},
+            priorizacion:'1',
           });
+          setN(0);
         
         })
         .catch(err => console.log(err));
@@ -116,7 +144,22 @@ useEffect(() => {
     }
 
  
-  } 
+  }
+
+  const addPro = (e) => {
+    setData({
+      ...data,
+      "procedimiento":{...data.procedimiento,[n+1]:""}
+    })
+
+    setN(n+1)
+  }
+
+  const removePro = (e) => {
+    const temp = data.procedimiento;
+     delete temp[e.target.name];
+    setData({ ...data, "procedimiento":temp})
+  }
 
 
 
@@ -157,13 +200,44 @@ useEffect(() => {
           <h2>Informacion Medica del registro</h2>
 
           <div className={styles.form_group}>
-                <label htmlFor="nombre">Procedimiento</label>
-                <input className={styles.campo} type="text" name="procedimiento" value={data["procedimiento"]} onChange={onChange} />
+                <label htmlFor="nombre">Procedimientos</label>
+                {
+                  Object.keys(data.procedimiento).map((key) => {
+
+                    if(key == 0){
+                      return(
+                        <div key={key} className={styles.Procedimento_Field}>
+                          <input className={styles.campo} type="text" name={key} value={data.procedimiento[key]} onChange={ChangePro} />
+                          
+                        </div>
+                      )
+                    }
+                    return (
+                      <div className={styles.Procedimento_Field} key={key} >
+
+                        <input className={styles.campo}  type="text" name={key} value={data["procedimiento"][key]} onChange={ChangePro} />
+                        <button name={key} onClick={removePro} className={styles.Delete}>-</button>
+                      </div>
+                    )
+                  })
+                }
+
+                <button onClick={addPro}  className={styles.addButton}>+</button>
+                
+
           </div>
 
           <div className={styles.form_group}>
-                <label htmlFor="nombre">Priorizacion: {priorizacion[data["priorizacion"]]}</label>
-                <input className={styles.barra} type="range" id="vol" name="priorizacion" min="1" max="5"  onChange={onChange} />
+                <label htmlFor="nombre">Priorización</label>
+                <select  className={styles.Prio} name="priorizacion" onChange={onChange}>
+                  <option value="1">Muy baja</option>
+                  <option value="2">Baja</option>
+                  <option value="3">Media</option>
+                  <option value="4">Alta</option>
+                  <option value="5">Muy alta</option>
+
+                </select>
+              
           </div>
           
         </section>

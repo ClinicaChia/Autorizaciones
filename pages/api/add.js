@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const db = client.db("Autorizaciones");
     const collection = db.collection("Historial");
 
-    await collection.insertOne(data);
+    await collection.insertMany(data);
 
 
 
