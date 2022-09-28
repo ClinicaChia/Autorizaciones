@@ -26,7 +26,7 @@ export default function Form() {
             const data = res.data;
 
             localStorage.setItem('data',  JSON.stringify(data) )
-            console.log(data)
+         
             data.Cargo === 'Asistencial' ? router.push('/main') : router.push('/summary')
         
         })

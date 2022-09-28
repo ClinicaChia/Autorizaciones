@@ -22,9 +22,7 @@ const priorizacionStyles = {
 
 
 
-export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket}) {
-
-    const [Inputs,setInputs] = useState({}) 
+export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs}) {
 
     const HandleChange = (e) => {
         setInputs({
@@ -54,6 +52,25 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket}) {
         }
 
 
+    }
+
+    const handleUpdate = (data) => {
+        const authTime = new Date().getTime();
+        const auth = Inputs[data.TimeStap];
+        if(auth){
+            axios.post('/api/update',{
+                TimeStap : data.TimeStap,
+                autorizacion:auth,
+                AuthTime:authTime,
+            }).then((res) => {
+                socket.emit('update',{TimeStap : data.TimeStap,autorizacion:auth})
+                alert('Se ha actualizado la base de datos')})
+            .catch((err) => {alert('Ha ocurrido un error')})
+        }
+        else{
+            alert('Debe ingresar un valor en la autorizacion diferente al registrado en la base de datos')
+        }
+        
     }
 
   return (
@@ -105,9 +122,9 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket}) {
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
-                            <td>{item.autorizacion}</td>
+                            <td> <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> </td>
                             <td>AUTORIZADO</td>
-                            <td> <button  disabled  >Editar</button> </td>
+                            <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Editar</button> </td>
                         </tr>
                     )
                 })}

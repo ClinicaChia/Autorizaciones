@@ -19,8 +19,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('validate', (data) => {
-        console.log("si envia el mensaje");
+        console.log("Se agrega a la base de datos");
         socket.local.emit('validate', data);
+    })
+
+    socket.on('update', (data) => {
+        console.log("Se actualiza la base de datos");
+        socket.local.emit('update', data);
     })
 
     socket.on('disconnect', () => {

@@ -96,7 +96,7 @@ useEffect(() => {
 
     if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 ){
 
-        const dataToSend = Object.keys(data.procedimiento).map( (key) => {
+        const dataToSend = Object.keys(data.procedimiento).map( (key,index) => {
 
           const fecha = new Date();
           const fechaString = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
@@ -105,7 +105,7 @@ useEffect(() => {
           const temp = {
             fecha: fechaString,
             hora: horaString,
-            TimeStap: fecha.getTime(),
+            TimeStap: fecha.getTime() + index,
             AuthTime: 0,
             autorizacion:'',
             procedimiento: data.procedimiento[key],

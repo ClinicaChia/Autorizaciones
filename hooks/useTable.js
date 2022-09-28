@@ -39,7 +39,7 @@ const useTable = (initalData) => {
     }, [])
 
     useEffect(() => {
-        console.log(dataTemp)
+       
         if(dataTemp.AuthTime){
             setData1(data1.filter((item) => item.TimeStap != dataTemp.TimeStap))
         }

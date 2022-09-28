@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const client = await MongoClient.connect(process.env.MONGO_URI);
   const db = client.db("Autorizaciones");
   const collection = db.collection("Historial");
-  console.log(data)
+
   await collection.updateOne( { TimeStap: data.TimeStap}, { $set: { autorizacion: data.autorizacion, AuthTime:data.AuthTime } } );
 
   await client.close();

@@ -22,11 +22,11 @@ export default function Summary({Data,SOCKETS_URI}) {
     
     const data = Data.data
 
-    console.log(data)
+
    
     const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp] = useTable(data)
     
-
+    const [Inputs,setInputs] = useState({}) 
     
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
@@ -42,9 +42,23 @@ export default function Summary({Data,SOCKETS_URI}) {
         //setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
         setDataTemp(data)
         setData2( (prev) => [...prev,data])
-        
+        setCambio( (prev) => prev+1)
        
       });
+
+      socket.on("update", (data) => {
+        setData2( (prev) => {
+        
+          return prev.map( (val,index) =>{
+            if(val.TimeStap == data.TimeStap){
+              val.autorizacion = data.autorizacion
+              console.log(index)
+              return val
+            }
+            return val
+          } )
+        })
+      })
         
       };
     
@@ -81,6 +95,8 @@ export default function Summary({Data,SOCKETS_URI}) {
         data1={data1} setData1={setData1} 
         
         setData2={setData2} socket={socket}
+
+        Inputs={Inputs} setInputs={setInputs}
         />
 
         
