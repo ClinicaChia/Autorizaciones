@@ -30,6 +30,7 @@
     border-collapse: collapse;
     border: 2px solid var(--primary);
     margin-top: 20px;
+    margin-bottom: 100px;
 }
 
 .container td, .container th{

@@ -31,7 +31,7 @@ export default function Summary({Data,SOCKETS_URI}) {
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
     
-      socket = io(SOCKETS_URI,{reconnection: false});
+      socket = io(SOCKETS_URI,{reconnection: true});
       
       socket.on("append", (data) => {
         setData1( (prev) => [...prev,...data])
