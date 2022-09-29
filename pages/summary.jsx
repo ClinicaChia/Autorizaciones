@@ -81,14 +81,7 @@ export default function Summary({Data,SOCKETS_URI}) {
         
         <input className={styles.filtro} type="text" onChange={(e)=>{setFilter(e.target.value)}}  placeholder='Escriba la cedula para realizar el filtro...✍️' />
 
-        <section className={styles.row}>
 
-            <Card titulo="Dias en UCI" numero={10} color="Crimson" />
-            <Card titulo="Dias en Observación" numero={10} color="Gold" />
-            <Card titulo="Dias en Hospitalización" numero={10} color="LimeGreen" />
-            <Card titulo="Procedimientos" numero={10} color="DarkBlue" />
-
-        </section>
 
         <Table  Tabla1={Tabla1}  Tabla2={Tabla2} 
         

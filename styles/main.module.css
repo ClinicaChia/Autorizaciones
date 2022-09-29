@@ -47,6 +47,19 @@
     border-radius: 5px;
     padding: 5px;
     outline: none;
+    
+
+}
+
+.campo2{
+    width: 40vw;
+    word-wrap: break-word;
+    word-break: break-all;
+    height: 20px;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
 
 }
 
@@ -106,7 +119,7 @@
     font-size: 25px;
     border-radius: 50%;
     transition: all 0.3s ease;
-    margin-left: 10vw;
+    margin-left: 20vw;
 }
 
 .addButton:hover{
@@ -137,4 +150,8 @@
     color: var(--secondary);
     background-color: crimson;
     border-radius: 20%;
+}
+
+.container datalist{
+    width: 100vw;
 }

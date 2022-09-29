@@ -12,7 +12,7 @@ const priorizacion = {
   4:'alta',
   5:'muy alta'
 }
-export default function Main({SOCKETS_URI}) {
+export default function Main({SOCKETS_URI,cups}) {
 
 
   const socketInitializer = async () => {
@@ -207,7 +207,8 @@ useEffect(() => {
                     if(key == 0){
                       return(
                         <div key={key} className={styles.Procedimento_Field}>
-                          <input className={styles.campo} type="text" name={key} value={data.procedimiento[key]} onChange={ChangePro} />
+
+                          <input list='cups' autoComplete='off' className={styles.campo2} type="text" name={key} value={data.procedimiento[key]} onChange={ChangePro} />
                           
                         </div>
                       )
@@ -215,12 +216,22 @@ useEffect(() => {
                     return (
                       <div className={styles.Procedimento_Field} key={key} >
 
-                        <input className={styles.campo}  type="text" name={key} value={data["procedimiento"][key]} onChange={ChangePro} />
+                        <input autoComplete='off' className={styles.campo2} list='cups' type="text" name={key} value={data["procedimiento"][key]} onChange={ChangePro} />
                         <button name={key} onClick={removePro} className={styles.Delete}>-</button>
                       </div>
                     )
                   })
                 }
+
+                    <datalist role="listbox" id='cups' className={styles.data} >
+
+                    {cups.map( (item,key) => {
+                      return(
+                        <option style={{color: "red"}} key={key} value={ `${item.code} - ${item.name}`  } />
+                      )
+                    })}
+
+                    </datalist>
 
                 <button onClick={addPro}  className={styles.addButton}>+</button>
                 
@@ -249,8 +260,13 @@ useEffect(() => {
 }
 
 
-Main.getInitialProps = () => {
+export async function getServerSideProps(context) {
+
+  console.log(process.env.CUPS_URI)
+  const cups = await (await fetch(process.env.CUPS_URI)).json();
   return {
-      SOCKETS_URI: process.env.SOCKETS_URI,
-  };
+     props: { SOCKETS_URI: process.env.SOCKETS_URI,cups}, // will be passed to the page component as props
+  }
 }
+
+
