@@ -109,8 +109,8 @@ useEffect(() => {
             AuthTime: 0,
             autorizacion:'',
             procedimiento: data.procedimiento[key],
-            servicio: localData.usuario
-
+            servicio: localData.usuario,
+            anexo: ''
           }
 
           return {

@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const db = client.db("Autorizaciones");
   const collection = db.collection("Historial");
 
-  await collection.updateOne( { TimeStap: data.TimeStap}, { $set: { autorizacion: data.autorizacion, AuthTime:data.AuthTime } } );
+  await collection.updateOne( { TimeStap: data.TimeStap}, { $set: { autorizacion: data.autorizacion, AuthTime:data.AuthTime , anexo: data.anexo } } );
 
   await client.close();
   res.status(200).json("ok" )

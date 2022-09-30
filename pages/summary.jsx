@@ -27,6 +27,8 @@ export default function Summary({Data,SOCKETS_URI}) {
     const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp] = useTable(data)
     
     const [Inputs,setInputs] = useState({}) 
+
+    const [Inputs2,setInputs2] = useState({}) 
     
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
@@ -52,6 +54,7 @@ export default function Summary({Data,SOCKETS_URI}) {
           return prev.map( (val,index) =>{
             if(val.TimeStap == data.TimeStap){
               val.autorizacion = data.autorizacion
+              val.anexo = data.anexo
               console.log(index)
               return val
             }
@@ -90,6 +93,8 @@ export default function Summary({Data,SOCKETS_URI}) {
         setData2={setData2} socket={socket}
 
         Inputs={Inputs} setInputs={setInputs}
+
+        Inputs2={Inputs2} setInputs2={setInputs2}
         />
 
         

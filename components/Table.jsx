@@ -22,11 +22,18 @@ const priorizacionStyles = {
 
 
 
-export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs}) {
+export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs,Inputs2,setInputs2}) {
 
     const HandleChange = (e) => {
         setInputs({
             ...Inputs,
+            [e.target.name]:e.target.value
+        })
+    }
+
+    const HandleChange2 = (e) => {
+        setInputs2({
+            ...Inputs2,
             [e.target.name]:e.target.value
         })
     }
@@ -38,12 +45,14 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
             setData1( data1.filter((item)=> item.TimeStap != data.TimeStap ) )
             data.autorizacion = Inputs[data.TimeStap];
             data.AuthTime = new Date().getTime();
+            data.anexo = Inputs2[data.TimeStap];
             setData2( (prev) => [...prev,data])
             socket.emit('validate',data)
             axios.post('/api/update',{
                 TimeStap : data.TimeStap,
                 autorizacion:data.autorizacion,
                 AuthTime:data.AuthTime,
+                anexo:data.anexo
             }).then((res) => {alert('Se ha actualizado la base de datos')})
             .catch((err) => {alert('Ha ocurrido un error')})
         }
@@ -62,8 +71,9 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                 TimeStap : data.TimeStap,
                 autorizacion:auth,
                 AuthTime:authTime,
+                anexo:Inputs2[data.TimeStap]
             }).then((res) => {
-                socket.emit('update',{TimeStap : data.TimeStap,autorizacion:auth})
+                socket.emit('update',{TimeStap : data.TimeStap,autorizacion:auth,anexo:Inputs2[data.TimeStap]})
                 alert('Se ha actualizado la base de datos')})
             .catch((err) => {alert('Ha ocurrido un error')})
         }
@@ -86,6 +96,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                     <th>E.P.S</th>
                     <th>Priorizacion</th>
                     <th>Codigo</th>
+                    <th>Anexo</th>
                     <th>Estado</th>
                     <th>Acciones</th>
 
@@ -105,6 +116,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                             <td>{item.EPS}</td>
                             <td  className={ priorizacionStyles[item.priorizacion] } >{priorizacion[item.priorizacion]}</td>
                             <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> </td>
+                            <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange2 } type="text" /> </td>
                             <td>PENDIENTE</td>
                             <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td>
                         </tr>
@@ -123,6 +135,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
                             <td> <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> </td>
+                            <td> <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 } type="text" /> </td>
                             <td>AUTORIZADO</td>
                             <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Editar</button> </td>
                         </tr>

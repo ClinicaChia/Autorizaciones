@@ -35,7 +35,8 @@
 
 .container td, .container th{
     
-    max-width: 200px;
+    min-width: 50px;
+    max-width: 120px;
 }
 
 .container table tr th{
@@ -123,6 +124,7 @@
     border-radius: 2px;
     text-align: center;
     font-size: 15px;
+    width: 80px;
 
 }
 
