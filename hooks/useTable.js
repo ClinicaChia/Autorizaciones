@@ -4,6 +4,7 @@ const useTable = (initalData) => {
 
 
     const [filter,setFilter] = useState('')
+    const [tipo,setTipo] = useState('')
     const [data1,setData1] = useState([])
     const [data2,setData2] = useState([])
     const [dataTemp,setDataTemp] = useState({})
@@ -11,9 +12,9 @@ const useTable = (initalData) => {
         if(filter == ''){
             return data1.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
         }
-        let temp = data1.filter((item) => item.documento == filter )
+        let temp = data1.filter((item) => item.documento == filter && item.tipo == tipo)
         return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
-    },[filter,data1])
+    },[filter,data1,tipo])
 
     const Tabla2 = useMemo(() => {
 
@@ -50,7 +51,7 @@ const useTable = (initalData) => {
 
 
 
-    return [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp]
+    return [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo]
 }
 
 export default useTable;

@@ -15,7 +15,7 @@ import Table from '../components/Table';
 let socket;
 
 
-
+const tipos = ["","CC","RC","TI","MS","PA","CE","AS","PE","PT","NU","CN"]
 
 
 export default function Summary({Data,SOCKETS_URI}) {
@@ -23,12 +23,17 @@ export default function Summary({Data,SOCKETS_URI}) {
     const data = Data.data
 
 
+    const [localData,setLocalData] = useState({Cargo:''});
    
-    const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp] = useTable(data)
+    const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo] = useTable(data)
     
     const [Inputs,setInputs] = useState({}) 
 
     const [Inputs2,setInputs2] = useState({}) 
+
+    const handleChange = (e) => {
+      setTipo(e.target.value)
+    }
     
     const socketInitializer = async () => {
         // We just call it because we don't need anything else out of it
@@ -68,6 +73,8 @@ export default function Summary({Data,SOCKETS_URI}) {
 
     useEffect(() => {
         socketInitializer();
+        setLocalData( JSON.parse(localStorage.getItem('data')) )
+        
     }, []);
 
 
@@ -81,10 +88,18 @@ export default function Summary({Data,SOCKETS_URI}) {
     
     <main className={styles.container}>
         <Navbar active={false}/>
-        
+
+
+        <div className= {styles.row} >
+
+        <select   className={styles.identifacion} name="tipo" onChange={handleChange}  value={tipo} >
+                {tipos.map((tipo,index) =>  <option key={index} value={tipo}>{tipo}</option> )}
+        </select>
+
         <input className={styles.filtro} type="text" onChange={(e)=>{setFilter(e.target.value)}}  placeholder='Escriba la cedula para realizar el filtro...✍️' />
 
 
+        </div>
 
         <Table  Tabla1={Tabla1}  Tabla2={Tabla2} 
         
@@ -95,6 +110,8 @@ export default function Summary({Data,SOCKETS_URI}) {
         Inputs={Inputs} setInputs={setInputs}
 
         Inputs2={Inputs2} setInputs2={setInputs2}
+
+        localData={localData}
         />
 
         

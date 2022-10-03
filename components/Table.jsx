@@ -22,7 +22,7 @@ const priorizacionStyles = {
 
 
 
-export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs,Inputs2,setInputs2}) {
+export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs,Inputs2,setInputs2,localData}) {
 
     const HandleChange = (e) => {
         setInputs({
@@ -98,7 +98,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                     <th>Codigo</th>
                     <th>Anexo</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
+                    { localData.Cargo ==="Facturador"? <th>Acciones</th>: null}
 
                 </tr>
             </thead>
@@ -109,16 +109,16 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                         <tr   key={index}>
                             <td>{item.fecha}</td>
                             <td>{item.hora}</td>
-                            <td>{item.documento}</td>
+                            <td>{`${item.tipo} ${item.documento}`}</td>
                             <td>{item.nombre}</td>
                             <td>{item.servicio}</td>
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td  className={ priorizacionStyles[item.priorizacion] } >{priorizacion[item.priorizacion]}</td>
-                            <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> </td>
-                            <td> <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange2 } type="text" /> </td>
+                            <td>    { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> :null }   </td>
+                            <td> { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange2 } type="text" /> : null} </td>
                             <td>PENDIENTE</td>
-                            <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td>
+                            { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td> : null} 
                         </tr>
                     )
                 })}
@@ -134,10 +134,10 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                             <td>{item.procedimiento}</td>
                             <td>{item.EPS}</td>
                             <td>{priorizacion[item.priorizacion]}</td>
-                            <td> <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> </td>
-                            <td> <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 } type="text" /> </td>
+                            <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> : item.autorizacion } </td>
+                            <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 } type="text" /> : item.anexo} </td>
                             <td>AUTORIZADO</td>
-                            <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Editar</button> </td>
+                             { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Editar</button> </td> : null } 
                         </tr>
                     )
                 })}

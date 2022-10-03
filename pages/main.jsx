@@ -5,15 +5,12 @@ import io from "socket.io-client";
 import axios from 'axios';
 let socket;
 
-const priorizacion = {
-  1:'muy baja',
-  2:'baja',
-  3:'media',
-  4:'alta',
-  5:'muy alta'
-}
+
+const tipos = ["","CC","RC","TI","MS","PA","CE","AS","PE","PT","NU","CN"]
+
 export default function Main({SOCKETS_URI,cups}) {
 
+  const [existe,setExiste] = useState(false)
 
   const socketInitializer = async () => {
     // We just call it because we don't need anything else out of it
@@ -35,18 +32,18 @@ useEffect(() => {
     EPS:'',
     procedimiento:{ [n] :''},
     priorizacion:'1',
+    tipo: '',
   })
 
   const [localData,setLocalData] = useState(null);
 
 
-  //useEffect(() => {console.log(data)}, [data]);
   const onChange = (e) => {
     const val = e.target.value ;
- 
+    console.log(val)
     const lastChar = val.length?  val[val.length - 1].toUpperCase() : '11' ;
 
-  if(  e.target.name =='documento' && (lastChar.charCodeAt(0) >= 48 && lastChar.charCodeAt(0) <= 57) && (lastChar !=' ' || lastChar=='11' )    )  {
+  if(  e.target.name =='documento' && ( lastChar.charCodeAt(0)===45 ||  (lastChar.charCodeAt(0) >= 48 && lastChar.charCodeAt(0) <= 57)) && (lastChar !=' ' || lastChar=='11' )    )  {
 
     setData({
       ...data,
@@ -84,17 +81,32 @@ useEffect(() => {
   
   const QueryDB = (e) => {
     //se hace la consulta a la base de datos
-    setData({
-      ...data,
-      nombre: "nombre de prueba",
-      EPS: "EPS de prueba",
-    });
+
+    axios.get('/api/getPaciente',{
+      params:{ documento:data.documento,tipo : data.tipo }
+    }).then((res)=>{  
+
+      const paciente = res.data;
+      setData({
+        ...data,
+        nombre: paciente.Nombre,
+        EPS: paciente.EPS,
+        tipo: paciente.Tipo,
+      });
+
+      setExiste(true)
+
+      }).catch((err)=>{
+        alert( "Paciente no encontrado, cuando se registre se agregara a la base de datos, recuerde revisar el tipo de documento" )
+        setExiste(false)
+      })
+
     
   }
 
   const AppendDB = (e) => {
 
-    if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 ){
+    if( data.documento.length >= 5 && data.nombre.length > 0 && data.EPS.length > 0 && data.tipo.length > 1 ){
 
         const dataToSend = Object.keys(data.procedimiento).map( (key,index) => {
 
@@ -103,6 +115,7 @@ useEffect(() => {
           const horaString = fecha.getHours() + ':' + fecha.getMinutes();
 
           const temp = {
+            documento: data.documento,
             fecha: fechaString,
             hora: horaString,
             TimeStap: fecha.getTime() + index,
@@ -110,7 +123,8 @@ useEffect(() => {
             autorizacion:'',
             procedimiento: data.procedimiento[key],
             servicio: localData.usuario,
-            anexo: ''
+            anexo: '',
+            EPS : data.EPS.toLocaleUpperCase(),
           }
 
           return {
@@ -120,7 +134,16 @@ useEffect(() => {
         } );
 
         
-        
+        axios.post('/api/Register',{
+          documento: data.documento,
+          Nombre:data.nombre,
+          EPS:data.EPS.toUpperCase(),
+          Tipo:data.tipo,
+          existe,
+        }
+        ).catch((err)=>{alert("Error al registrar al paciente")});
+      
+      
 
         axios.post('/api/add', dataToSend)
         .then(res => {
@@ -132,8 +155,10 @@ useEffect(() => {
             EPS:'',
             procedimiento:{ [0] :''},
             priorizacion:'1',
+            tipo: '',
           });
           setN(0);
+          setExiste(false);
         
         })
         .catch(err => console.log(err));
@@ -173,9 +198,13 @@ useEffect(() => {
               <div className={styles.form_group}>
 
                 <label htmlFor="nombre">Documento</label>
-                <input className={styles.campo} type="text" name="documento" value={data["documento"]} onChange={onChange} autoComplete="off" />
+                <input  disabled={existe} className={styles.campo} type="text" name="documento" value={data["documento"]} onChange={onChange} autoComplete="off" />
 
               </div>
+
+              <select  disabled={existe} className={styles.identifacion} name="tipo" onChange={onChange}  value={data["tipo"]} >
+                {tipos.map((tipo,index) =>  <option key={index} value={tipo}>{tipo}</option> )}
+              </select>
 
               <button className={styles.btn_consulta} onClick={QueryDB} >Consultar</button>
               
@@ -186,7 +215,7 @@ useEffect(() => {
 
           <div className={styles.form_group}>
                 <label htmlFor="nombre">Nombre</label>
-                <input className={styles.campo} type="text" name="nombre" value={data["nombre"]} onChange={onChange} autoComplete="off" />
+                <input disabled={existe} className={styles.campo} type="text" name="nombre" value={data["nombre"]} onChange={onChange} autoComplete="off" />
           </div>
 
           <div className={styles.form_group}>
@@ -268,5 +297,5 @@ export async function getServerSideProps(context) {
      props: { SOCKETS_URI: process.env.SOCKETS_URI,cups}, // will be passed to the page component as props
   }
 }
-
+"Paciente no encontrado, cuando se registre se agregara a la base de datos"
 
