@@ -60,7 +60,7 @@ export default function Summary({Data,SOCKETS_URI}) {
             if(val.TimeStap == data.TimeStap){
               val.autorizacion = data.autorizacion
               val.anexo = data.anexo
-              console.log(index)
+           
               return val
             }
             return val

@@ -40,7 +40,7 @@ useEffect(() => {
 
   const onChange = (e) => {
     const val = e.target.value ;
-    console.log(val)
+
     const lastChar = val.length?  val[val.length - 1].toUpperCase() : '11' ;
 
   if(  e.target.name =='documento' && ( lastChar.charCodeAt(0)===45 ||  (lastChar.charCodeAt(0) >= 48 && lastChar.charCodeAt(0) <= 57)) && (lastChar !=' ' || lastChar=='11' )    )  {
@@ -291,7 +291,7 @@ useEffect(() => {
 
 export async function getServerSideProps(context) {
 
-  console.log(process.env.CUPS_URI)
+ 
   const cups = await (await fetch(process.env.CUPS_URI)).json();
   return {
      props: { SOCKETS_URI: process.env.SOCKETS_URI,cups}, // will be passed to the page component as props

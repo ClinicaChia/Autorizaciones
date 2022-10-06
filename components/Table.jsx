@@ -65,15 +65,16 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
 
     const handleUpdate = (data) => {
         const authTime = new Date().getTime();
-        const auth = Inputs[data.TimeStap];
-        if(auth){
+        const auth = Inputs[data.TimeStap]?Inputs[data.TimeStap]:data.autorizacion
+        const anexo = Inputs2[data.TimeStap]?Inputs2[data.TimeStap]:data.anexo
+        if(data){
             axios.post('/api/update',{
                 TimeStap : data.TimeStap,
                 autorizacion:auth,
                 AuthTime:authTime,
-                anexo:Inputs2[data.TimeStap]
+                anexo:anexo
             }).then((res) => {
-                socket.emit('update',{TimeStap : data.TimeStap,autorizacion:auth,anexo:Inputs2[data.TimeStap]})
+                socket.emit('update',{TimeStap : data.TimeStap,autorizacion:auth,anexo:anexo})
                 alert('Se ha actualizado la base de datos')})
             .catch((err) => {alert('Ha ocurrido un error')})
         }
@@ -118,7 +119,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                             <td>    { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> :null }   </td>
                             <td> { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange2 } type="text" /> : null} </td>
                             <td>PENDIENTE</td>
-                            { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Editar</button> </td> : null} 
+                            { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Actualizar</button> </td> : null} 
                         </tr>
                     )
                 })}

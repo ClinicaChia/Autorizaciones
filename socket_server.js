@@ -14,17 +14,16 @@ io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
 
     socket.on('append', (data) => {
-        console.log(data);
         socket.local.emit('append', data);
     })
 
     socket.on('validate', (data) => {
-        console.log("Se agrega a la base de datos");
+        
         socket.local.emit('validate', data);
     })
 
     socket.on('update', (data) => {
-        console.log("Se actualiza la base de datos");
+      
         socket.local.emit('update', data);
     })
 
