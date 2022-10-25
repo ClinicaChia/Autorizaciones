@@ -29,10 +29,11 @@ const useTable = (initalData) => {
         if(filter == ''){
             return temp.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
         }
-       temp = temp.filter((item) => item.documento == filter )
+        temp = temp.filter((item) => item.documento == filter && item.tipo == tipo)
+      
         return temp.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
 
-    },[filter,data2])
+    },[filter,data2,tipo])
 
    
     useEffect(() => {

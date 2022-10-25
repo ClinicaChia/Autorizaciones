@@ -129,7 +129,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                         <tr  className={styles.complete} key={index}>
                             <td>{item.fecha}</td>
                             <td>{item.hora}</td>
-                            <td>{item.documento}</td>
+                            <td>{`${item.tipo} ${item.documento}`}</td>
                             <td>{item.nombre}</td>
                             <td>{item.servicio}</td>
                             <td>{item.procedimiento}</td>
