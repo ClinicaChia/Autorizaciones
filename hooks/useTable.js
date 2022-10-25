@@ -4,24 +4,32 @@ const useTable = (initalData) => {
 
 
     const [filter,setFilter] = useState('')
+    const [cargo,setCargo] = useState(initalData)
     const [tipo,setTipo] = useState('')
     const [data1,setData1] = useState([])
     const [data2,setData2] = useState([])
     const [dataTemp,setDataTemp] = useState({})
     const Tabla1 = useMemo(() => {
-        if(filter == ''){
-            return data1.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
+        let temp = data1
+        if(cargo !== "Autorizador"){
+            temp = temp.filter( (item) => item.servicio === cargo )
         }
-        let temp = data1.filter((item) => item.documento == filter && item.tipo == tipo)
+        if(filter == ''){
+            return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
+        }
+        temp = temp.filter((item) => item.documento == filter && item.tipo == tipo)
         return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
     },[filter,data1,tipo])
 
     const Tabla2 = useMemo(() => {
-
-        if(filter == ''){
-            return data2.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
+        let temp = data2
+        if(cargo !== "Autorizador"){
+            temp = temp.filter( (item) => item.servicio === cargo )
         }
-        let temp = data2.filter((item) => item.documento == filter )
+        if(filter == ''){
+            return temp.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
+        }
+       temp = temp.filter((item) => item.documento == filter )
         return temp.sort((b,a) =>  Number(a.TimeStap) - Number(b.TimeStap));
 
     },[filter,data2])
@@ -51,7 +59,7 @@ const useTable = (initalData) => {
 
 
 
-    return [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo]
+    return [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo,setCargo]
 }
 
 export default useTable;

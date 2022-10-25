@@ -1,12 +1,12 @@
 {
   "name": "autorizaciones",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "devServer": "nodemon socket_server.js",
     "serve": "pm2 start server.js --name Autorizaciones",
-    "sokects": "pm2 start socket_server.js --name Sockets_para_Autorizaciones",
+    "serve2": "pm2 start socket_server.js --name Sockets_para_Autorizaciones",
     "devReportes": "nodemon ./scripts/Reportes.js",
     "build": "next build",
     "db": "nodemon server_db.js",
@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "isomorphic-fetch": "^3.0.0",
     "mongodb": "^4.9.1",

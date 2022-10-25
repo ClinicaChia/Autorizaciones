@@ -25,7 +25,7 @@ export default function Summary({Data,SOCKETS_URI}) {
 
     const [localData,setLocalData] = useState({Cargo:''});
    
-    const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo] = useTable(data)
+    const [setFilter,data1,setData1,data2,setData2,Tabla1,Tabla2,setDataTemp,tipo,setTipo,setCargo] = useTable(data)
     
     const [Inputs,setInputs] = useState({}) 
 
@@ -73,7 +73,11 @@ export default function Summary({Data,SOCKETS_URI}) {
 
     useEffect(() => {
         socketInitializer();
-        setLocalData( JSON.parse(localStorage.getItem('data')) )
+        const _data = JSON.parse(localStorage.getItem('data'))
+        setLocalData( _data )
+
+        setCargo(_data.usuario)
+
         
     }, []);
 

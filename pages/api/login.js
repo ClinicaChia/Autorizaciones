@@ -18,7 +18,7 @@ const handler = nc({
   .post(async (req, res) => {
 
     const data = req.body;
-
+    console.log(data)
     const client = await MongoClient.connect(process.env.MONGO_URI);
     const db = client.db("Autorizaciones");
     const collection = db.collection("Servicios");

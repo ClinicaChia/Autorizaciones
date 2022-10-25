@@ -4,9 +4,12 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server,{cors: {origin: '*'}});
 const cors = require('cors');
+const dotenv = require('dotenv')
 
+dotenv.config({ path: '.env.local' })
+dotenv.config()
 
-const port = 3001;
+const port = process.env.SOCKETS_PORT;
 
 app.use(cors());
 

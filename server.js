@@ -2,9 +2,14 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 
+const dotenv = require('dotenv');
+
+dotenv.config({ path: '.env.local' })
+dotenv.config()
+
 const dev = false
 const hostname = 'localhost'
-const port = 3001
+const port = 3000
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()

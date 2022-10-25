@@ -47,7 +47,8 @@ export default function Form() {
                     <option value="UCI neonatal">UCI neonatal</option>
                     <option value="1UCI adulto">UCI adulto</option>
                     <option value="Cirugia">Cirugia</option>
-                    <option value="Ginecobtetricia">Ginecoobtetricia</option>
+                    <option value="Gineco">Gineco</option>
+                    <option value="Autorizador">Autorizador</option>
 
                 
                 </select>
@@ -62,7 +63,7 @@ export default function Form() {
 
                 <article className={styles.radio_form} >
                     <input type="radio" id='r2' name="rango" value="Facturador" onChange={handleChange}  />
-                    <label htmlFor="r2">Facturador</label>
+                    <label htmlFor="r2">Autorizador</label>
                 </article>
                 
             </section>
