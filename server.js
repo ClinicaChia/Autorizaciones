@@ -9,7 +9,7 @@ dotenv.config()
 
 const dev = false
 const hostname = 'localhost'
-const port = 3000
+const port = process.env.HOST_PORT
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()

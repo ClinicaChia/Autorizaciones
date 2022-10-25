@@ -138,7 +138,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                             <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> : item.autorizacion } </td>
                             <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 } type="text" /> : item.anexo} </td>
                             <td>AUTORIZADO</td>
-                             { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Editar</button> </td> : null } 
+                             { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Actualizar</button> </td> : null } 
                         </tr>
                     )
                 })}

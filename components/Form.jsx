@@ -45,7 +45,7 @@ export default function Form() {
                     <option value="Hospitalizacion">Hospitalizacion</option>
                     <option value="Urgencias">Urgencias</option>
                     <option value="UCI neonatal">UCI neonatal</option>
-                    <option value="1UCI adulto">UCI adulto</option>
+                    <option value="UCI adulto">UCI adulto</option>
                     <option value="Cirugia">Cirugia</option>
                     <option value="Gineco">Gineco</option>
                     <option value="Autorizador">Autorizador</option>
