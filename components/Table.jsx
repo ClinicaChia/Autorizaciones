@@ -3,11 +3,11 @@ import styles from '../styles/summary.module.css'
 import axios from 'axios'
 
 const priorizacion = {
-    1:'muy baja',
-    2:'baja',
-    3:'media',
-    4:'alta',
-    5:'muy alta'
+    1:'Muy baja',
+    2:'Baja',
+    3:'Media',
+    4:'Alta',
+    5:'Muy alta'
 }
 
 
