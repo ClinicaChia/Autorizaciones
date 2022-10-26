@@ -56,6 +56,8 @@
 
 .container td{
     padding: 8px;
+    overflow-wrap: break-word;
+    font-size: 14px;
 }
 
 .container .MA{
