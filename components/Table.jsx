@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import styles from '../styles/summary.module.css'
+
 import axios from 'axios'
 
 const priorizacion = {
@@ -12,17 +12,21 @@ const priorizacion = {
 
 
 const priorizacionStyles = {
-    1: styles.MB,
-    2: styles.B,
-    3: styles.M,
-    4: styles.A,
-    5: styles.MA,
+    1: 'bg-green-400 p-1 border border-blue-800 font-semibold',
+    2: 'bg-green-300 p-1 border border-blue-800 font-semibold',
+    3: 'bg-yellow-300 p-1 border border-blue-800 font-semibold',
+    4: 'bg-yellow-400 p-1 border border-blue-800 font-semibold',
+    5: 'bg-red-400 p-1 border border-blue-800 font-semibold',
 }
 
 
 
 
 export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs,Inputs2,setInputs2,localData}) {
+
+
+    console.log("local",localData)
+
 
     const HandleChange = (e) => {
         setInputs({
@@ -85,60 +89,60 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
     }
 
   return (
-    <table key={Tabla1.length} >
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Documento</th>
-                    <th>Nombre del paciente</th>
-                    <th>Servicio</th>
-                    <th>Procedimiento</th>
-                    <th>E.P.S</th>
-                    <th>Priorizacion</th>
-                    <th>Codigo</th>
-                    <th>Anexo</th>
-                    <th>Estado</th>
-                    { localData.Cargo ==="Facturador"? <th>Acciones</th>: null}
+    <table key={Tabla1.length} className="w-full mb-28" >
+            <thead className='bg-blue-800' >
+                <tr className='text-center text-white h-12' >
+                    <th className='border-2 p-1 border-l-blue-800' >Fecha</th>
+                    <th className='border-2 p-1'>Hora</th>
+                    <th className='border-2 p-1'>Documento</th>
+                    <th className='border-2 p-1'>Nombre del paciente</th>
+                    <th className='border-2 p-1'>Servicio</th>
+                    <th className='border-2 p-1'>Procedimiento</th>
+                    <th className='border-2 p-1'>E.P.S</th>
+                    <th className='border-2 p-1'>Priorizacion</th>
+                    <th className='border-2 p-1'>Codigo</th>
+                    <th className='border-2 '>Anexo</th>
+                    <th className='border-2 p-1'>Estado</th>
+                    { localData.servicio ==="Autorizador"? <th className='border-2 p-1  border-r-blue-800' >Acciones</th>: null}
 
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody className='text-xs text-center' >
                 {Tabla1.map((item,index) => {
                     return(
                         <tr   key={index}>
-                            <td>{item.fecha}</td>
-                            <td>{item.hora}</td>
-                            <td>{`${item.tipo} ${item.documento}`}</td>
-                            <td>{item.nombre}</td>
-                            <td>{item.servicio}</td>
-                            <td>{item.procedimiento}</td>
-                            <td>{item.EPS}</td>
-                            <td  className={ priorizacionStyles[item.priorizacion] } >{priorizacion[item.priorizacion]}</td>
-                            <td>    { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange } type="text" /> :null }   </td>
-                            <td> { localData.Cargo ==="Facturador" ? <input name={item.TimeStap} defaultValue=""  onChange={  HandleChange2 } type="text" /> : null} </td>
-                            <td>PENDIENTE</td>
-                            { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {HandleClik(item)} } >Actualizar</button> </td> : null} 
+                            <td className='p-1 border border-blue-800'>{item.fecha}</td>
+                            <td className='p-1 border border-blue-800'>{item.hora}</td>
+                            <td className='p-1 border border-blue-800'>{`${item.tipo} ${item.documento}`}</td>
+                            <td className='p-1 border border-blue-800'>{item.nombre}</td>
+                            <td className='p-1 border border-blue-800'>{item.servicio}</td>
+                            <td className='p-1 border border-blue-800'>{item.procedimiento}</td>
+                            <td className='p-1 border border-blue-800'>{item.EPS}</td>
+                            <td  className={ priorizacionStyles[item.priorizacion]  } >{priorizacion[item.priorizacion]}</td>
+                            <td className='p-1 border border-blue-800'> { localData.servicio ==="Autorizador" ? <textarea name={item.TimeStap} defaultValue="" className='border border-black'  onChange={  HandleChange }  /> :null }   </td>
+                            <td className='p-1 border border-blue-800'> { localData.servicio ==="Autorizador" ? <textarea name={item.TimeStap} defaultValue="" className='border border-black'  onChange={  HandleChange2 }  /> : null} </td>
+                            <td className='p-1 border border-blue-800 text-red-400' >PENDIENTE</td>
+                            { localData.servicio ==="Autorizador"? <td className='p-1 border border-blue-800' > <button name={item.TimeStap} className="w-16 h-8 bg-yellow-400 border border-yellow-400 hover:bg-white transition-all duration-200"  onClick={ ()=> {HandleClik(item)} } >Actualizar</button> </td> : null} 
                         </tr>
                     )
                 })}
 
                 {Tabla2.map((item,index) => {
                     return(
-                        <tr  className={styles.complete} key={index}>
-                            <td>{item.fecha}</td>
-                            <td>{item.hora}</td>
-                            <td>{`${item.tipo} ${item.documento}`}</td>
-                            <td>{item.nombre}</td>
-                            <td>{item.servicio}</td>
-                            <td>{item.procedimiento}</td>
-                            <td>{item.EPS}</td>
-                            <td>{priorizacion[item.priorizacion]}</td>
-                            <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } type="text" /> : item.autorizacion } </td>
-                            <td> { localData.Cargo ==="Facturador"? <input name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 } type="text" /> : item.anexo} </td>
-                            <td>AUTORIZADO</td>
-                             { localData.Cargo ==="Facturador"? <td> <button name={item.TimeStap} className={styles.editButton}  onClick={ ()=> {handleUpdate(item)} } >Actualizar</button> </td> : null } 
+                        <tr className='bg-gray-400 text-white font-semibold' key={index}>
+                            <td className='p-1 border border-blue-800' >{item.fecha}</td>
+                            <td className='p-1 border border-blue-800'>{item.hora}</td>
+                            <td className='p-1 border border-blue-800'>{`${item.tipo} ${item.documento}`}</td>
+                            <td className='p-1 border border-blue-800'>{item.nombre}</td>
+                            <td className='p-1 border border-blue-800'>{item.servicio}</td>
+                            <td className='p-1 border border-blue-800'>{item.procedimiento}</td>
+                            <td className='p-1 border border-blue-800'>{item.EPS}</td>
+                            <td className='p-1 border border-blue-800'>{priorizacion[item.priorizacion]}</td>
+                            <td className='p-1 border border-blue-800'> { localData.servicio ==="Autorizador"? <textarea className='text-black' name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.autorizacion} onChange={  HandleChange } /> : item.autorizacion } </td>
+                            <td className='p-1 border border-blue-800'> { localData.servicio ==="Autorizador"? <textarea className='text-black' name={item.TimeStap}  key={item.autorizacion.length} defaultValue={item.anexo} onChange={  HandleChange2 }  /> : item.anexo} </td>
+                            <td className='p-1 border border-blue-800' >AUTORIZADO</td>
+                             { localData.servicio ==="Autorizador"? <td className='p-1 border border-blue-800'> <button name={item.TimeStap} className="w-16 h-8 bg-inherit border border-white hover:bg-white hover:text-black transition-all duration-200"  onClick={ ()=> {handleUpdate(item)} } >Actualizar</button> </td> : null } 
                         </tr>
                     )
                 })}

@@ -8,7 +8,11 @@ export default async function handler(req, res) {
   const db = client.db("Autorizaciones");
   const collection = db.collection("Historial");
 
-  const result = await collection.find({}).toArray();
+  const time = new Date()
+
+  const initTime = time.getTime() - 1000*60*60*24*7
+
+  const result = await collection.find({ TimeStap: { "$gte": initTime } }).toArray();
 
   await client.close();
   res.status(200).json({ data: result })

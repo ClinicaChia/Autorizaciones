@@ -22,7 +22,9 @@ const handler = nc({
     const client = await MongoClient.connect(process.env.MONGO_URI);
     const db = client.db("Autorizaciones");
     const collection = db.collection("Servicios");
-    const query = { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
+
+    
+    const query = data.servicio==="Facturador" ? { usuario: data.servicio,Cargo: data.rango,Password: data.pass , autorizador: data.usuario  } : { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
  
     const result = await collection.findOne(query);
  

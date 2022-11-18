@@ -1,5 +1,4 @@
 import React,{useEffect,useState} from 'react'
-import styles from '../styles/main.module.css'
 import Navbar from '../components/Navbar'
 import io from "socket.io-client";
 import axios from 'axios';
@@ -189,70 +188,75 @@ useEffect(() => {
 
 
   return (
-    <div className={styles.container}>
+    <div className="w-full flex flex-col items-center">
         <Navbar active={true}/>
-        <section>
-          <h2>Informacion del paciente</h2>
-          <div className={styles.row_consulta}> 
+        <section className='w-2/4 flex flex-col mt-5' >
+          <h2 className='text-center text-xl font-bold'>Informacion del paciente</h2>
+          <div className="flex flex-col mt-8"> 
 
-              <div className={styles.form_group}>
 
-                <label htmlFor="nombre">Documento</label>
-                <input  disabled={existe} className={styles.campo} type="text" name="documento" value={data["documento"]} onChange={onChange} autoComplete="off" />
+                <label htmlFor="nombre" className='italic text-blue-800' >Documento</label>
 
-              </div>
+      
 
-              <select  disabled={existe} className={styles.identifacion} name="tipo" onChange={onChange}  value={data["tipo"]} >
+              <div className='flex gap-4 w-full p-2 pl-0'>
+
+              <input  disabled={existe} className="w-3/6 border-2 border-blue-800 rounded-md p-1" type="text" name="documento" value={data["documento"]} onChange={onChange} autoComplete="off" />
+              <select  disabled={existe}  className="border-2 border-blue-800 rounded-md" name="tipo" onChange={onChange}  value={data["tipo"]} >
                 {tipos.map((tipo,index) =>  <option key={index} value={tipo}>{tipo}</option> )}
               </select>
 
-              <button className={styles.btn_consulta} onClick={QueryDB} >Consultar</button>
+              <button className="w-2/12 border-2 border-blue-800 rounded-md bg-blue-800 text-white hover:text-blue-800 hover:bg-white transition-all duration-200" onClick={QueryDB} >Consultar</button>
+
+              </div>
+
+              
               
           </div>
               
              
         
 
-          <div className={styles.form_group}>
-                <label htmlFor="nombre">Nombre</label>
-                <input disabled={existe} className={styles.campo} type="text" name="nombre" value={data["nombre"]} onChange={onChange} autoComplete="off" />
+          <div className="flex flex-col mt-5 w-full">
+                <label className=' italic text-blue-800' htmlFor="nombre">Nombre</label>
+                <input disabled={existe} className="w-3/6 border-2 border-blue-800 rounded-lg p-1" type="text" name="nombre" value={data["nombre"]} onChange={onChange} autoComplete="off" />
           </div>
 
-          <div className={styles.form_group}>
-                <label htmlFor="nombre">E.P.S</label>
-                <input className={styles.campo} type="text" name="EPS" value={data["EPS"]} onChange={onChange}  />
+          <div className="flex flex-col mt-5 w-full mb-8">
+                <label className='italic text-blue-800' htmlFor="nombre">E.P.S</label>
+                <input className="w-3/6 border-2 border-blue-800 rounded-lg p-1" type="text" name="EPS" value={data["EPS"]} onChange={onChange}  />
           </div>
 
         </section>
         
-        <section>
-          <h2>Informacion Medica del registro</h2>
+        <section className='w-2/4 flex flex-col mt-5' >
+          <h2 className='text-center font-bold text-xl'>Informacion Medica del registro</h2>
 
-          <div className={styles.form_group}>
-                <label htmlFor="nombre">Procedimientos</label>
+          <div className="flex flex-col w-full">
+                <label htmlFor="nombre" className='italic text-blue-800 mt-5' >Procedimientos</label>
                 {
                   Object.keys(data.procedimiento).map((key) => {
 
                     if(key == 0){
                       return(
-                        <div key={key} className={styles.Procedimento_Field}>
+                        <div key={key} className=" p-1 pl-0">
 
-                          <input list='cups' autoComplete='off' className={styles.campo2} type="text" name={key} value={data.procedimiento[key]} onChange={ChangePro} />
+                          <input list='cups' autoComplete='off' className="p-1 pl-0 w-5/6 border border-blue-800 rounded-sm" type="text" name={key} value={data.procedimiento[key]} onChange={ChangePro} />
                           
                         </div>
                       )
                     }
                     return (
-                      <div className={styles.Procedimento_Field} key={key} >
+                      <div className="flex gap-3 items-center" key={key} >
 
-                        <input autoComplete='off' className={styles.campo2} list='cups' type="text" name={key} value={data["procedimiento"][key]} onChange={ChangePro} />
-                        <button name={key} onClick={removePro} className={styles.Delete}>-</button>
+                        <input autoComplete='off' className="p-1 pl-0 w-5/6 border border-blue-800 rounded-sm mt-4" list='cups' type="text" name={key} value={data["procedimiento"][key]} onChange={ChangePro} />
+                        <button name={key} onClick={removePro} className="text-red-500 text-2xl w-8 p-1 pl-0 mt-4 cursor-pointer">-</button>
                       </div>
                     )
                   })
                 }
 
-                    <datalist role="listbox" id='cups' className={styles.data} >
+                    <datalist role="listbox" id='cups'  >
 
                     {cups.map( (item,key) => {
                       return(
@@ -262,14 +266,14 @@ useEffect(() => {
 
                     </datalist>
 
-                <button onClick={addPro}  className={styles.addButton}>+</button>
+                <button onClick={addPro}  className="mt-3 text-3xl text-green-500 rounded-full hover:bg-green-500 w-8 hover:text-white transition-all duration-300 self-center">+</button>
                 
 
           </div>
 
-          <div className={styles.form_group}>
-                <label htmlFor="nombre">Priorización</label>
-                <select  className={styles.Prio} name="priorizacion" onChange={onChange}>
+          <div className="flex flex-col w-full  ">
+                <label htmlFor="nombre" className='italic text-blue-800 mb-2 ' >Priorización</label>
+                <select  className="w-2/6 border-2 border-blue-800 text-center" name="priorizacion" onChange={onChange}>
                   <option value="1">Muy baja</option>
                   <option value="2">Baja</option>
                   <option value="3">Media</option>
@@ -282,7 +286,7 @@ useEffect(() => {
           
         </section>
 
-        <button className={styles.enviar} onClick={AppendDB} >Registrar</button>
+        <button className="w-32 bg-yellow-400 h-8 p-2 mt-10 mb-10 rounded-md hover:bg-yellow-500 transition-all duration-200" onClick={AppendDB} >Registrar</button>
 
     </div>
   )

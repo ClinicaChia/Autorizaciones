@@ -2,6 +2,7 @@ import React,{useEffect,useState,useMemo} from 'react'
 
 const useTable = (initalData) => {
 
+   
 
     const [filter,setFilter] = useState('')
     const [cargo,setCargo] = useState(initalData)
@@ -10,7 +11,11 @@ const useTable = (initalData) => {
     const [data2,setData2] = useState([])
     const [dataTemp,setDataTemp] = useState({})
     const Tabla1 = useMemo(() => {
+
+        console.log(cargo)
         let temp = data1
+        console.log("Temporal",temp)
+
         if(cargo !== "Autorizador" && cargo !== "Cirugia" && cargo !== "Hospitalizacion"){
             temp = temp.filter( (item) => item.servicio === cargo )
         }
@@ -18,6 +23,7 @@ const useTable = (initalData) => {
             return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
         }
         temp = temp.filter((item) => item.documento == filter && item.tipo == tipo)
+
         return temp.sort((b,a) =>  Number(a.priorizacion) - Number(b.priorizacion));
     },[filter,data1,tipo])
 
@@ -41,13 +47,16 @@ const useTable = (initalData) => {
 
         if(initalData.length > 0){
             
-            let temp = initalData.filter((item) => item.AuthTime ==0 )
+            let temp = initalData.filter((item) => item.AuthTime == 0 )
+ 
             setData1(temp)
             temp = initalData.filter((item) => item.AuthTime !=0 )
             setData2(temp)
 
         }
     }, [])
+
+
 
     useEffect(() => {
        

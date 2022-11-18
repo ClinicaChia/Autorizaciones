@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import styles from '../styles/home.module.css'
+
 
 export default function Form() {
     const router = useRouter();
@@ -10,6 +10,7 @@ export default function Form() {
         servicio: '',
         pass: '',
         rango: '',
+        usuario: '',
     })
 
     const handleChange = (e) => {
@@ -21,11 +22,19 @@ export default function Form() {
 
     const HandleLogIn = (e) => {
         e.preventDefault();
-        axios.post('/api/login', data)
+        const tempData = data
+        const rango = data.servicio ==="Autorizador" ? "Facturador" : "Asistencial"
+        tempData.rango = rango
+        if(data.servicio === "Autorizador" && data.usuario === ""){
+
+            return alert("Ingrese su usuario")
+
+        }
+        axios.post('/api/login', tempData)
         .then((res) => {
             const data = res.data;
 
-            localStorage.setItem('data',  JSON.stringify(data) )
+            localStorage.setItem('data',  JSON.stringify(tempData) )
          
             data.Cargo === 'Asistencial' ? router.push('/main') : router.push('/summary')
         
@@ -34,13 +43,15 @@ export default function Form() {
         
     }
   return (
-    <div className={styles.right}>
+    <div className="flex  w-1/2  h-screen items-center ">
 
-            <h1>Software de autorizaciones medicas</h1>
+        <div  className="flex h-3/4 justify-evenly w-full flex-col items-center" >
 
-            <section className={styles.form_group}>
-                <label className={styles.cedula}>Servicio</label>
-                <select className={styles.services} name="servicio"  value={data["servicio"]}  onChange={handleChange} >
+            <h1 className='text-3xl font-semibold text-blue-800' >Software de autorizaciones medicas</h1>
+
+            <section className="flex w-2/5 flex-col">
+                <label className="text-lg font-semibold border-blue-800 rounded-md outline-none">Servicio</label>
+                <select className="border-2 border-blue-800 text-center" name="servicio"  value={data["servicio"]}  onChange={handleChange} >
                     <option value=" "></option>
                     <option value="Hospitalizacion">Hospitalizacion</option>
                     <option value="Urgencias">Urgencias</option>
@@ -54,28 +65,24 @@ export default function Form() {
                 </select>
             </section>
 
-            <section className={styles.form_group}>
-                <label className={styles.cedula}>Cargo</label>
-                <article className={styles.radio_form} >
-                    <input type="radio" name="rango" id='r1' value="Asistencial" onChange={handleChange}  />
-                    <label htmlFor="r1">Asistencial</label>
-                </article>
 
-                <article className={styles.radio_form} >
-                    <input type="radio" id='r2' name="rango" value="Facturador" onChange={handleChange}  />
-                    <label htmlFor="r2">Autorizador</label>
-                </article>
+
+            {data.servicio==="Autorizador" && <section className="flex w-2/5 flex-col">
+                <label className="text-lg font-semibold">Usuario</label>
                 
+                <input type="text" className='border-2 border-blue-800' name="usuario"  onChange={handleChange}  />
+        
+            </section>}
+
+            <section className="flex w-2/5 flex-col">
+                <label className="text-lg font-semibold"  >Contraseña</label>
+                <input type="password" value={data["pass"]}  className='border-2 border-blue-800' name="pass"  onChange={handleChange}  />
+
             </section>
 
-            <section className={styles.form_group}>
-                <label className={styles.pass}  >Contraseña</label>
-                <input type="password" value={data["pass"]} name="pass" onChange={handleChange} />
-            </section>
-
-            <button className={styles.login} onClick={HandleLogIn} >Ingresar</button>
-            <button className={styles.forgot}  onClick={()=>{ window.open('http://173.16.10.137/glpi/plugins/formcreator/front/formdisplay.php?id=1', '_blank'); }} >Se me olvido la contraseña</button>
-
+            <button className="w-1/4 bg-blue-800 text-white p-1 border-2 border-blue-800 hover:text-blue-800 hover:bg-white transition-all duration-200" onClick={HandleLogIn} >Ingresar</button>
+            <button className="font-bold underline text-blue-800"  onClick={()=>{ window.open('http://173.16.10.137/glpi/plugins/formcreator/front/formdisplay.php?id=1', '_blank'); }} >¿Has olvidado la contraseña?</button>
+            </div>
         </div>
   )
 }
