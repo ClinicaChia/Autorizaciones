@@ -30,6 +30,11 @@ io.on('connection', (socket) => {
         socket.local.emit('update', data);
     })
 
+    socket.on('changeState', (data) => {
+      
+        socket.local.emit('changeState', data);
+    })
+
     socket.on('disconnect', () => {
         
         console.log('user disconnected');

@@ -23,10 +23,13 @@ const handler = nc({
     const db = client.db("Autorizaciones");
     const collection = db.collection("Servicios");
 
-    
-    const query = data.servicio==="Facturador" ? { usuario: data.servicio,Cargo: data.rango,Password: data.pass , autorizador: data.usuario  } : { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
+  
+    const query = data.servicio ==="Autorizador" ? { usuario: data.usuario,Cargo: data.rango,Password: data.pass   } : { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
  
     const result = await collection.findOne(query);
+
+
+
  
     await client.close();
     result ? res.status(200).json(result) : res.status(401).end("No se encontro el usuario");

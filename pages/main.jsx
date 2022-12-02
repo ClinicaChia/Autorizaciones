@@ -189,7 +189,7 @@ useEffect(() => {
 
   return (
     <div className="w-full flex flex-col items-center">
-        <Navbar active={true}/>
+        <Navbar active={1}/>
         <section className='w-2/4 flex flex-col mt-5' >
           <h2 className='text-center text-xl font-bold'>Informacion del paciente</h2>
           <div className="flex flex-col mt-8"> 

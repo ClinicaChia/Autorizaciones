@@ -65,6 +65,23 @@ export default function Summary({Data,SOCKETS_URI}) {
           } )
         })
       })
+
+      socket.on("changeState", (data) => {
+        setData1( (prev) => {
+        
+          return prev.map( (val,index) =>{
+            if(val.TimeStap == data.TimeStap){
+              val.Estado = data.Estado
+              
+           
+              return val
+            }
+            return val
+          } )
+        })
+      })
+
+
         
       };
     
@@ -87,7 +104,7 @@ export default function Summary({Data,SOCKETS_URI}) {
   return (
     
     <main className="flex flex-col  justify-center items-center">
-        <Navbar active={false}/>
+        <Navbar active={2}/>
 
 
         <div className= "flex w-1/3  justify-center gap-2 mt-12 mb-8">
