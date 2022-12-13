@@ -1,7 +1,7 @@
 const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
-
+const schedule = require('node-schedule')
 const dotenv = require('dotenv');
 
 dotenv.config({ path: '.env.local' })
@@ -66,6 +66,7 @@ schedule.scheduleJob(rule, function(){
 const dev = false
 const hostname = 'localhost'
 const port = process.env.HOST_PORT
+console.log("localhost:",port)
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()

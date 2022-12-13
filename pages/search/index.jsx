@@ -54,7 +54,7 @@ export default function Index() {
 
     const QueryDB = async () => {
 
-        const res = await axios.get(`http://localhost:3000/api/search?documento=${data.documento}&tipo=${data.tipo}`)
+        const res = await axios.get(`http://173.16.11.9:3007/api/search?documento=${data.documento}&tipo=${data.tipo}`)
       
         setData({...data,Historial:res.data,nombre:res.data[0].nombre,EPS:res.data[0].EPS})
 

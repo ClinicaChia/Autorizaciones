@@ -129,7 +129,7 @@ useEffect(() => {
             AuthTime: 0,
             autorizacion:'',
             procedimiento: data.procedimiento[key],
-            servicio: localData.usuario,
+            servicio: localData.servicio,
             anexo: '',
             EPS : data.EPS.toLocaleUpperCase(),
             Estado: 'PENDIENTE',
