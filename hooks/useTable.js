@@ -12,11 +12,11 @@ const useTable = (initalData) => {
     const [dataTemp,setDataTemp] = useState({})
     const Tabla1 = useMemo(() => {
 
-        console.log(cargo)
+    
         let temp = data1
-        console.log("Temporal",temp)
+    
 
-        if(cargo !== "Autorizador" && cargo !== "Cirugia" && cargo !== "Hospitalizacion"){
+        if(cargo !== "Autorizador" && cargo !== "Cirugia" && cargo !== "Hospitalizacion" && cargo !== "Observador" && cargo !== "Administrador"){
             temp = temp.filter( (item) => item.servicio === cargo )
         }
         if(filter == ''){
@@ -30,7 +30,7 @@ const useTable = (initalData) => {
     const Tabla2 = useMemo(() => {
         let temp = data2
       
-        if(cargo !== "Autorizador" && cargo !== "Cirugia" && cargo !== "Hospitalizacion"){
+        if(cargo !== "Autorizador" && cargo !== "Cirugia" && cargo !== "Hospitalizacion" && cargo !== "Observador" && cargo !== "Administrador"){
             temp = temp.filter( (item) => item.servicio === cargo )
         }
         if(filter == ''){

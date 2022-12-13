@@ -14,7 +14,7 @@ const port = process.env.SOCKETS_PORT;
 app.use(cors());
 
 io.on('connection', (socket) => {
-    console.log('a user connected', socket.id);
+    
 
     socket.on('append', (data) => {
         socket.local.emit('append', data);
@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         
-        console.log('user disconnected');
+      
     });
 
 });

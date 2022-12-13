@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     
     const { documento,tipo } = req.query;
 
-    console.log({ documento: documento, Tipo: tipo });
+
 
     const client = await MongoClient.connect(process.env.MONGO_URI);
 

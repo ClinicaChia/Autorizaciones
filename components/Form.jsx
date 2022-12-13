@@ -35,8 +35,10 @@ export default function Form() {
             const data = res.data;
 
             localStorage.setItem('data',  JSON.stringify(tempData) )
+
          
-            data.Cargo === 'Asistencial' ? router.push('/main') : router.push('/summary')
+         
+            data.Cargo === 'Asistencial'  ? data.usuario === "Observador" ? router.push('/summary') : router.push('/main') : router.push('/summary')
         
         })
         .catch((err) => {alert("Contraseña Incorrecta")})
@@ -60,6 +62,8 @@ export default function Form() {
                     <option value="Cirugia">Cirugia</option>
                     <option value="Gineco">Gineco</option>
                     <option value="Autorizador">Autorizador</option>
+                    <option value="Observador">Observador</option>
+                    <option value="Administrador">Administrador</option>
 
                 
                 </select>

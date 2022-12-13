@@ -1,7 +1,18 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 export default function Navbar({active}) {
+
+  const [perfil,setPerfil] = useState("")
+
+ useEffect(() => {
+  //get localstorage convert to json and set perfil
+  const perfil = JSON.parse(localStorage.getItem('data'))
+
+  console.log(perfil)
+  setPerfil(perfil.servicio)
+ }, [])
+
 
 
 
@@ -10,17 +21,23 @@ export default function Navbar({active}) {
     <nav className="w-full bg-blue-800 flex justify-between items-center p-2 ">
 
         <ul className="flex gap-4 text-white text-xl pl-10 ">
-            <li className={active === 1  ? 'font-bold cursor-pointer' : 'cursor-pointer'}
+
+
+            { perfil!== "Observador" && <li className={active === 1  ? 'font-bold cursor-pointer' : 'cursor-pointer'}
             onClick={() => router.push('/main')}
-            >Formulario</li>
+            >Formulario</li>}
 
             <li 
             onClick={() => router.push('/summary')}
             className={ active === 2  ? 'font-bold cursor-pointer' : 'cursor-pointer'}>Resumen</li>
 
-<li 
+            { perfil!== "Observador" && perfil=== "Administrador" && <li 
             onClick={() => router.push('/search')}
-            className={ active === 3  ? 'font-bold cursor-pointer' : 'cursor-pointer'}>Busqueda</li>
+            className={ active === 3  ? 'font-bold cursor-pointer' : 'cursor-pointer'}>Busqueda</li>}
+
+            { perfil!== "Observador" && perfil=== "Administrador" && <li 
+            onClick={() => router.push('/reports')}
+            className={ active === 4  ? 'font-bold cursor-pointer' : 'cursor-pointer'}>Reportes</li>}
 
         </ul>
         

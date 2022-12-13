@@ -23,7 +23,7 @@ export default function Index() {
     })
 
     useEffect(() => {
-        console.log(data)
+    
     }, [data]);
 
     const onChange = (e) => {
@@ -55,7 +55,7 @@ export default function Index() {
     const QueryDB = async () => {
 
         const res = await axios.get(`http://localhost:3000/api/search?documento=${data.documento}&tipo=${data.tipo}`)
-        console.log(res.data)
+      
         setData({...data,Historial:res.data,nombre:res.data[0].nombre,EPS:res.data[0].EPS})
 
         

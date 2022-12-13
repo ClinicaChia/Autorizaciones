@@ -30,7 +30,7 @@ const estadoStyles = {
 export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inputs,setInputs,Inputs2,setInputs2,localData}) {
 
 
-    console.log("local",localData)
+   
 
 
     const HandleChange = (e) => {
@@ -167,7 +167,7 @@ export default function Table({Tabla1,Tabla2,data1,setData1,setData2,socket,Inpu
                 })}
 
                 {Tabla2.map((item,index) => {
-                    console.log(item)
+              
                     return(
                         <tr className='bg-gray-400 text-white font-semibold' key={index}>
                             <td className='p-1 border border-blue-800' >{item.fecha}</td>

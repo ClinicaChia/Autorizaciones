@@ -7,7 +7,7 @@ let socket;
 
 const tipos = ["","CC","RC","TI","MS","PA","CE","AS","PE","PT","NU","CN"]
 
-export default function Main({SOCKETS_URI,cups}) {
+export default function Main({SOCKETS_URI,cups,eps}) {
 
   const [existe,setExiste] = useState(false)
 
@@ -38,6 +38,7 @@ useEffect(() => {
 
 
   const onChange = (e) => {
+    
     const val = e.target.value ;
 
     const lastChar = val.length?  val[val.length - 1].toUpperCase() : '11' ;
@@ -60,6 +61,13 @@ useEffect(() => {
   }
 
   else if( e.target.name == "priorizacion" ){
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  else if( e.target.name === "EPS"){
     setData({
       ...data,
       [e.target.name]: e.target.value,
@@ -124,6 +132,8 @@ useEffect(() => {
             servicio: localData.usuario,
             anexo: '',
             EPS : data.EPS.toLocaleUpperCase(),
+            Estado: 'PENDIENTE',
+             
           }
 
           return {
@@ -185,8 +195,6 @@ useEffect(() => {
     setData({ ...data, "procedimiento":temp})
   }
 
-
-
   return (
     <div className="w-full flex flex-col items-center">
         <Navbar active={1}/>
@@ -224,7 +232,10 @@ useEffect(() => {
 
           <div className="flex flex-col mt-5 w-full mb-8">
                 <label className='italic text-blue-800' htmlFor="nombre">E.P.S</label>
-                <input className="w-3/6 border-2 border-blue-800 rounded-lg p-1" type="text" name="EPS" value={data["EPS"]} onChange={onChange}  />
+                
+                
+                <input list='eps' className="w-3/6 border-2 border-blue-800 rounded-lg p-1" type="text" name="EPS" value={data["EPS"]} onChange={onChange} />
+
           </div>
 
         </section>
@@ -255,6 +266,13 @@ useEffect(() => {
                     )
                   })
                 }
+                    
+
+                    <datalist role="listbox" id="eps" > 
+
+                      {eps.map((eps,index) => <option key={index} value={eps.Nombre} />)}
+
+                    </datalist>
 
                     <datalist role="listbox" id='cups'  >
 
@@ -297,8 +315,9 @@ export async function getServerSideProps(context) {
 
  
   const cups = await (await fetch(process.env.CUPS_URI)).json();
+  const eps = await (await fetch(process.env.EPS_URI)).json();
   return {
-     props: { SOCKETS_URI: process.env.SOCKETS_URI,cups}, // will be passed to the page component as props
+     props: { SOCKETS_URI: process.env.SOCKETS_URI,cups , eps}, // will be passed to the page component as props
   }
 }
 "Paciente no encontrado, cuando se registre se agregara a la base de datos"

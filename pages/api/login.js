@@ -24,7 +24,7 @@ const handler = nc({
     const collection = db.collection("Servicios");
 
   
-    const query = data.servicio ==="Autorizador" ? { usuario: data.usuario,Cargo: data.rango,Password: data.pass   } : { usuario: data.servicio,Cargo: data.rango,Password: data.pass };
+    const query = data.servicio ==="Autorizador" ? { usuario: data.usuario,Password: data.pass   } : { usuario: data.servicio,Password: data.pass };
  
     const result = await collection.findOne(query);
 

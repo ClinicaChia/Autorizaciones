@@ -90,7 +90,7 @@ export default function Summary({Data,SOCKETS_URI}) {
         socketInitializer();
         const _data = JSON.parse(localStorage.getItem('data'))
 
-        console.log( _data)
+        
         setLocalData( _data )
 
         setCargo(_data.servicio)
